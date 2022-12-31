@@ -22,7 +22,7 @@ object Mermaid:
 
   def apply(name:String, m: Method): String =
     s"""  subgraph ${name.replaceAll(" ","_")} [$name]
-       |${apply(qualify(name,m))}
+       |${apply(qualify(name,m),name)}
        |""".stripMargin
 
   private def qualify(name:String,m:Method): Method =
@@ -35,17 +35,18 @@ object Mermaid:
       m.dataflow.map(x=>updp(x._1)->x._2.map(updp)),
       m.call.map(x=>upd(x._1)->x._2))
 
-  def apply(m: Method): String =
+  def apply(m: Method, name: String): String =
     val c = new Cache
     import c._
+    val nm = name.replaceAll(" ","_")
 
     def getPin(pin:Pin): String = pin.act match
       case Some(a) => a
-      case None => s"p${get(pin.toString)}[$pin]:::it"
+      case None => s"p${get(pin.toString)}_$nm[$pin]:::it"
 
     val s = "    "
-    s"""${s}Init(( )):::in
-      |${s}Stop(( )):::st
+    s"""${s}Init_$nm(( )):::in
+      |${s}Stop_$nm(( )):::st
       |${s}${(for a<-m.activities
              yield if m.next.getOrElse(a._1,Set()).size +
                       m.stop(a._1).compareTo(false) > 1
@@ -55,8 +56,8 @@ object Mermaid:
                else s"${a._1}([${a._2}]):::df"
             ).mkString(s"\n$s")}
       |${s}${m.forks.map(x=>s"$x[   ]:::tr").mkString(s"\n$s")}
-      |${s}${m.start.map(x=>s"Init --> $x").mkString(s"\n$s")}
-      |${s}${m.stop.map(x=>s"$x --> Stop").mkString(s"\n$s")}
+      |${s}${m.start.map(x=>s"Init_$nm --> $x").mkString(s"\n$s")}
+      |${s}${m.stop.map(x=>s"$x --> Stop_$nm").mkString(s"\n$s")}
       |${s}${m.next.map(x=>
           s"${x._1} --> ${x._2.mkString(" & ")}").mkString(s"\n$s")}
       |${s}${(for pin1<-m.src; pin2<-m.dataflow.getOrElse(pin1,Set())
