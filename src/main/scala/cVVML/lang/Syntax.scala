@@ -20,13 +20,16 @@ object Syntax:
       snk.filter(_.act==a)
     /** Join of two methods */
     def ++(m2:Method): Method =
-      Method(activities++m2.activities,
+      Method(relStrJoin(activities,m2.activities),
         start++m2.start,       stop++m2.stop,
         forks++m2.forks,
         src++m2.src,           snk++m2.snk,
         relJoin(next,m2.next), relJoin(dataflow,m2.dataflow),
         call++m2.call
       )
+    private def relStrJoin[A](m1:Map[A,String],m2:Map[A,String]):Map[A,String] =
+      val upd = for (a,s)<-m2 if s!=a || !m1.contains(a) yield (a,s)
+      m1 ++ upd
     private def relJoin[A,B](m1:Map[A,Set[B]],m2:Map[A,Set[B]]):Map[A,Set[B]] =
       m2.foldLeft(m1)(relJoin)
     private def relJoin[A,B](m:Map[A,Set[B]],x:(A,Set[B])):Map[A,Set[B]] =

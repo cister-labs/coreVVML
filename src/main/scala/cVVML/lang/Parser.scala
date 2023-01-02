@@ -60,6 +60,9 @@ object Parser:
 //      (char('(') *> unqualPin.repSep0(char(',').sp).sp <* char(')')).sp ~
       (char('{') *> declarations.sp <* char('}'))
       )
+      .map(m => m._1 -> Method(m._2.activities -- m._2.forks, m._2.start, m._2.stop,
+        m._2.forks,
+        m._2.src, m._2.snk, m._2.next, m._2.dataflow, m._2.call))
 //      .map(x => x._1._1._1 -> (x._2++
 //         Method(Map(), Set(), Set(), Set(), x._1._1._2.toSet, x._1._2.toSet, Map(), Map(), Map())))
 
@@ -115,7 +118,7 @@ object Parser:
 
   def flowCont: P[String=>Method] =
     ((string("->")~sps) *> varName).map( x => (name =>
-      Method(Map(), Set(), Set(), Set(), Set(), Set(), Map(name->Set(x)), Map(), Map())))
+      Method(Map(name->name,x->x), Set(), Set(), Set(), Set(), Set(), Map(name->Set(x)), Map(), Map())))
 
   def dataflowCont: P[String => Method] =
     ((qualPinCont.? <* sps).with1 ~ ((string("=>")~sps) *> qualPin)).map(x => (name =>{
