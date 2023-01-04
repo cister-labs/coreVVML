@@ -175,7 +175,7 @@ object Parser:
 //    P.not(string("--")).with1 *>
 //      oneOf("+-><!%/*=|&".toList.map(char)).rep.string
   def symbols: P[Char] =
-    oneOf("+-><!%/*=|&".toList.map(c=>charIn(c)))
+    oneOf("+-><!%/*=|&?".toList.map(c=>charIn(c)))
 
   def str:P[String] =
     char('"') *> (alphaDigit|char(' ')|symbols).rep0.string <* char('"')

@@ -27,6 +27,15 @@ object Syntax:
         relJoin(next,m2.next), relJoin(dataflow,m2.dataflow),
         call++m2.call
       )
+    /** Get an activity's name */
+    def apply(a:Activity) =
+      activities.getOrElse(a,a)
+    /** checks if an activity has decisions */
+    def isDecisionAct(a: Activity): Boolean =
+//      println(s"${m(a)} -> ${m.next.get(a)} is decision? ${m.next.getOrElse(a, Set()).size > 1}")
+      (next.getOrElse(a, Set()).size + stop(a).compareTo(false)) > 1
+
+
     private def relStrJoin[A](m1:Map[A,String],m2:Map[A,String]):Map[A,String] =
       val upd = for (a,s)<-m2 if s!=a || !m1.contains(a) yield (a,s)
       m1 ++ upd

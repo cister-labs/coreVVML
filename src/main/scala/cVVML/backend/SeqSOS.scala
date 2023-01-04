@@ -59,13 +59,13 @@ object SeqSOS extends caos.sos.SOS[String,State]:
       if m.activities.contains(nxt) // if nxt is an activity
       then (
         if s.as.contains(a._1 -> nxt) then
-          sys.error(s"Trying to enter \"${a._1}/$nxt\" but state was not idle (${s.as.mkString(",")})")
+          sys.error(s"Trying to enter \"${a._1}/${m(nxt)}\" but state was not idle (${s.as.mkString(",")})")
         else
           s"allow-${a._1}/${nxt}" ->
             State(s.p, (s.as -- drop) + ((a._1 -> nxt) -> Ready), s.fs, s.ret))
       else (// nxt is a fork
         if s.as.contains(a._1 -> nxt) then
-          sys.error(s"Trying to enter \"${a._1}/$nxt\" but state was not idle (${s.as.mkString(",")})")
+          sys.error(s"Trying to enter \"${a._1}/${m(nxt)}\" but state was not idle (${s.as.mkString(",")})")
         else
           val x = a._1 -> nxt
           s"allow-${a._1}/${nxt}" ->
@@ -85,7 +85,8 @@ object SeqSOS extends caos.sos.SOS[String,State]:
           if m.forks(nxt) // nxt must be a fork
       yield (mn, nxt) -> (s.fs.getOrElse(f->nxt, 0)+1)
       for (nr,_) <- newReady if s.as.contains(nr) do
-        sys.error(s"Trying to enter $nr but state was not idle (${s.as.mkString(",")})")
+        sys.error(s"Trying to enter $nr but state was not idle (${
+          s.as.mkString(",")})") //improve message
       s"sync-$mn/$f" -> State(s.p, s.as ++ newReady, (s.fs-(mn->f)) ++ newForks, s.ret)
 
   private def callCase(s:State) =
@@ -98,6 +99,11 @@ object SeqSOS extends caos.sos.SOS[String,State]:
       s"call-$mname" -> State(st2.p,st2.as,st2.fs,cont)
 
 
+  /** Calculates the possible next states,
+   * potentially raising the following exceptions:
+   *  (1) stopping with running avtivities;
+   *  (2) entering a non-idle activity.
+   */
   def next[A>:String](s: State): Set[(A, State)] =
     // start
     startCase(s) ++

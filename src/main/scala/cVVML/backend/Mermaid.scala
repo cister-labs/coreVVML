@@ -19,7 +19,7 @@ object Mermaid:
         if dest.contains(f)
       yield a
       val need = pred.size
-      println(s"Need: $need (${pred.mkString(",")}), has: $n")
+      //println(s"Need: $need (${pred.mkString(",")}), has: $n")
       if n>=need then "Ready"
       else "NotReady"
     s"""${apply(s.p)}
@@ -73,8 +73,7 @@ object Mermaid:
     s"""${s}Init_$nm(( )):::in
       |${s}Stop_$nm(( )):::st
       |${s}${(for a<-m.activities
-             yield if m.next.getOrElse(a._1,Set()).size +
-                      m.stop(a._1).compareTo(false) > 1
+             yield if m.isDecisionAct(a._1)
                then s"${a._1}{{${a._2}}}:::gw"
              else if m.call.contains(a._1)
                then s"${a._1}([${a._2}]):::cl"

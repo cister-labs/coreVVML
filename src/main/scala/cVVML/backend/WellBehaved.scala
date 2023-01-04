@@ -5,7 +5,7 @@ import cVVML.lang.Syntax.Program
 
 object WellBehaved :
   def justControl(p:Program): Either[List[String],String] = try
-    val (nodes, edges, completed) = caos.sos.SOS.traverse(SeqSOS, SeqSOS.initial(p))
+    val (nodes, edges, completed) = caos.sos.SOS.traverse(SeqSOS, SeqSOS.initial(p), max=2000)
 
     var res = List[String]()
     val reached =
