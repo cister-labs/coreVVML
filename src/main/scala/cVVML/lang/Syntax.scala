@@ -1,17 +1,21 @@
 package cVVML.lang
 
 object Syntax:
+
   case class Program(ms:Map[String,Method], main:String)
 
+  type Lbl[A] = Map[A,String]
   case class Method(activities:Map[Activity,String], // all activities and descriptions
                     start: Set[Activity|Fork], // initial activities
                     stop: Set[Activity|Fork],  // terminal activities
                     forks:Set[Fork], // all forks/merges
                     src: Set[Pin], // source pins of activities and the method
                     snk: Set[Pin], // sink pins of activities and the method
-                    next: Map[Activity|Fork, Set[Activity|Fork]], // sequence arrow
+                    next: Map[Activity|Fork, Map[Activity|Fork,String]], // sequence arrow
                     dataflow: Map[Pin, Set[Pin]], // artifact arrow
-                    call: Map[Activity,MethodName]): // call behaviour of an activity
+                    call: Map[Activity,MethodName],
+                    nodeLbl:Lbl[Activity],
+                    edgeLbl:Lbl[(Activity|Fork|0, Activity|Fork|0)]): // call behaviour of an activity
     /** all input pins of an activity or the method */
     def inputs(a:Option[Activity]): Set[Pin] =
       src.filter(_.act==a)
@@ -24,8 +28,10 @@ object Syntax:
         start++m2.start,       stop++m2.stop,
         forks++m2.forks,
         src++m2.src,           snk++m2.snk,
-        relJoin(next,m2.next), relJoin(dataflow,m2.dataflow),
-        call++m2.call
+        relJoinL(next,m2.next), relJoin(dataflow,m2.dataflow),
+        call++m2.call,
+        relStrJoin(nodeLbl, m2.nodeLbl),
+        relStrJoin(edgeLbl, m2.edgeLbl)
       )
     /** Get an activity's name */
     def apply(a:Activity) =
@@ -45,14 +51,23 @@ object Syntax:
       m.get(x._1) match
         case Some(bs) => m+(x._1 -> (x._2++bs))
         case None => m + x
+    private def relJoinL[A, B](m1: Map[A, Map[B,String]], m2: Map[A, Map[B,String]])
+          : Map[A, Map[B,String]] =
+      m2.foldLeft(m1)(relJoinL)
+    private def relJoinL[A, B](m: Map[A, Map[B,String]], x: (A, Map[B,String]))
+          : Map[A, Map[B,String]] =
+      m.get(x._1) match
+        case Some(bs) => m + (x._1 -> (x._2 ++ bs))
+        case None => m + x
+
     def noData =
-      Method(activities,start,stop,forks,src,snk,next,Map(),call)
+      Method(activities,start,stop,forks,src,snk,next,Map(),call,nodeLbl,edgeLbl)
     def noFlow =
-      Method(activities,Set(),Set(),forks,src,snk,Map(),dataflow,call)
+      Method(activities,Set(),Set(),forks,src,snk,Map(),dataflow,call,nodeLbl,edgeLbl)
 
   object Method:
     val empty: Method =
-      Method(Map(), Set(), Set(), Set(), Set(), Set(), Map(), Map(), Map())
+      Method(Map(), Set(), Set(), Set(), Set(), Set(), Map(), Map(), Map(), Map(),Map())
 
 
   type Activity = String
@@ -80,8 +95,10 @@ object Syntax:
       forks = Set("1","2"), // forks -- needed to paint them differently(?)
       src = Set(min, x3o),
       snk = Set(mout, x3i, x4i),
-      next = Map("1"->Set("x3","x4"), "x3"->Set("2"), "x4"->Set("2")), // next
+      next = Map("1"->Map("x3"->"","x4"->""), "x3"->Map("2"->""), "x4"->Map("2"->"")), // next
       dataflow = Map(min->Set(x3i), x3o->Set(mout,x4i)),
-      call = Map()
+      call = Map(),
+      nodeLbl = Map(),
+      edgeLbl = Map()
     )
 

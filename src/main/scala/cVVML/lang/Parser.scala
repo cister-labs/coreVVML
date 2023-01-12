@@ -62,7 +62,7 @@ object Parser:
       )
       .map(m => m._1 -> Method(m._2.activities -- m._2.forks, m._2.start, m._2.stop,
         m._2.forks,
-        m._2.src, m._2.snk, m._2.next, m._2.dataflow, m._2.call))
+        m._2.src, m._2.snk, m._2.next, m._2.dataflow, m._2.call, m._2.nodeLbl, m._2.edgeLbl))
 //      .map(x => x._1._1._1 -> (x._2++
 //         Method(Map(), Set(), Set(), Set(), x._1._1._2.toSet, x._1._2.toSet, Map(), Map(), Map())))
 
@@ -77,7 +77,8 @@ object Parser:
       val name: String = x._1
       val (desc,isCall): (String,Boolean) = x._2.getOrElse((name,false))
       Method(Map(name->desc), Set(), Set(), Set(), Set(), Set(), Map(), Map(),
-        if isCall then Map(name->desc) else Map())
+        if isCall then Map(name->desc) else Map(),
+        Map(name->desc), Map())
     })
   def actDesc: P[(String,Boolean)] =
     (char('=')~sps *> (string("call")~sps).? ~ id)
@@ -85,23 +86,25 @@ object Parser:
 
   def fork: P[Method] =
     (string("fork") ~ sps) *> varName.map(x =>
-      Method(Map(), Set(), Set(), Set(x), Set(), Set(), Map(), Map(), Map()))
+      Method(Map(), Set(), Set(), Set(x), Set(), Set(), Map(), Map(), Map(), Map(), Map()))
 
   def start: P[Method] =
     (string("start")~sps) *>
       (activity.map(x =>
-        Method(x.activities, x.activities.keySet, Set(), Set(), Set(), Set(), Map(), Map(), x.call)) |
+        Method(x.activities, x.activities.keySet, Set(), Set(), Set(), Set(), Map(), Map(), x.call, x.nodeLbl, x.edgeLbl)) |
        fork.map(x =>
-        Method(Map(), x.forks.toSet, Set(), x.forks, Set(), Set(), Map(), Map(), x.call)))
+        Method(Map(), x.forks.toSet, Set(), x.forks, Set(), Set(), Map(), Map(), x.call, x.nodeLbl, x.edgeLbl)))
 //    ((string("start")~sps) *> varName.sp).map(x =>
 //      Method(Map(), Set(x), Set(), Set(), Set(), Set(), Map(), Map(), Map()))
 
   def stop: P[Method] =
     (string("stop")~sps) *>
-      (activity.map(x =>
-        Method(x.activities, Set(), x.activities.keySet, Set(), Set(), Set(), Map(), Map(), x.call)) |
+      ((activity~label.?).map(x =>
+        Method(x._1.activities, Set(), x._1.activities.keySet,
+               Set(), Set(), Set(), Map(), Map(), x._1.call, x._1.nodeLbl, x._1.edgeLbl)) |
       fork.map(x =>
-        Method(Map(), Set(), x.forks.toSet, x.forks, Set(), Set(), Map(), Map(), x.call)))
+        Method(Map(), Set(), x.forks.toSet,
+               x.forks, Set(), Set(), Map(), Map(), x.call, x.nodeLbl, x.edgeLbl)))
 //    ((string("stop") ~ sps) *> varName.sp).map(x =>
 //      Method(Map(), Set(), Set(x), Set(), Set(), Set(), Map(), Map(), Map()))
 
@@ -112,19 +115,27 @@ object Parser:
         val pin1 = Pin(None,x._1._1,x._1._2)
         val pin2 = x._2
         Method(Map(), Set(), Set(), Set(),
-          Set(pin1), Set(pin2), Map(), Map(pin1->Set(pin2)), Map())
+          Set(pin1), Set(pin2), Map(), Map(pin1->Set(pin2)), Map(), Map(), Map())
       }) |
     (varName ~ (sps *> (flowCont|dataflowCont))).map( x => x._2(x._1))
 
   def flowCont: P[String=>Method] =
-    ((string("->")~sps) *> varName).map( x => (name =>
-      Method(Map(name->name,x->x), Set(), Set(), Set(), Set(), Set(), Map(name->Set(x)), Map(), Map())))
+    ((string("->")~sps) *> varName ~ label.?).map( x => (name =>
+      Method(Map(name->name,x._1->x._1), Set(), Set(), Set(), Set(), Set(),
+             Map(name->Map(x._1->x._2.getOrElse(""))), Map(), Map(),
+             Map(),
+             if x._2.isDefined then Map((name,x._1)->x._2.get) else Map()
+      )))
+
+  def label: P[String] =
+    char(':') *> (alphaDigit|char(' ')|symbols).rep0.string <* char('\n')
 
   def dataflowCont: P[String => Method] =
     ((qualPinCont.? <* sps).with1 ~ ((string("=>")~sps) *> qualPin)).map(x => (name =>{
       val pin1 = x._1.getOrElse(y=>Pin(None,y,None))(name)
       val pin2 = x._2
-      Method(Map(), Set(), Set(), Set(), Set(pin1), Set(pin2), Map(), Map(pin1->Set(pin2)), Map())
+      Method(Map(), Set(), Set(), Set(), Set(pin1), Set(pin2), Map(), Map(pin1->Set(pin2)), Map(),
+        Map(), Map())
   }))
 
   def qualPin: P[Pin] =

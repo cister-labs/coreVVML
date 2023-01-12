@@ -32,30 +32,54 @@ object SeqSOS extends caos.sos.SOS[String,State]:
 
   private def stopCase(s:State): Set[(String,State)] =
     var res = Set[(String,State)]()
-    for (a, aSt) <- s.as
-        if (aSt==Run && !s.p.ms(a._1).call.contains(a._2)) ||
-          aSt==Done
+    for ((mn,a), aSt) <- s.as
+        // if activity "a" is ready to stop and...
+        if s.p.ms(mn).stop(a) &&
+        // ... it is ready to end its execution
+           ((aSt==Run && !s.p.ms(mn).call.contains(a)) ||
+            aSt==Done)
     do
-      val m = s.p.ms(a._1)
-      val nxts = s.p.ms(a._1).next.getOrElse(a._2,Set())
-      val drop = nxts.map(a._1->_)+a
-      if m.stop(a._2) then
-        val dropped = s.as--drop
-        if dropped.nonEmpty then
-          sys.error(s"Stopping with running activities (${dropped.mkString(",")}).")
-        val nextSt = s.ret.getOrElse(State(s.p, s.as -- drop, s.fs, None))
-        res += s"stop-${a._1}/${a._2}" -> nextSt
+      val m = s.p.ms(mn)
+      val nxts = m.next.getOrElse(a,Map())
+      val drop = nxts.map(kv => mn->kv._1)+(mn->a)
+      val dropped = s.as--drop
+      if dropped.nonEmpty then
+        sys.error(s"Stopping with running activities (${dropped.mkString(",")}).")
+      val nextSt = s.ret.getOrElse(State(s.p, s.as -- drop, s.fs, None))
+      res += s"stop-$mn/$a" -> nextSt
     res
+
+//  private def stuckCase(s:State): Unit =
+//    // first for activities
+//    for ((mn,a), aSt) <- s.as do
+//      val m = s.p.ms(mn)
+//      val nxts = m.next.getOrElse(a,Map())
+//      lazy val running = ((for ((`mn`,x),_) <- s.as yield x) ++
+//                          (for ((`mn`,x),_) <- s.fs yield x)).toSet - a
+//      println(s"checking if act $mn/$a is stuck. ${m.next.getOrElse(a, Map())} / ${running.mkString(",")}")
+//      if nxts.isEmpty && running.nonEmpty then
+//        sys.error(s"Stuck at \"$a\" before stopping with pending activities {${running.mkString(",")}} [@$mn]")
+//
+//    // then for forks/mergers
+//    for ((mn, f), nf) <- s.fs do
+//      val m = s.p.ms(mn)
+//      lazy val running = ((for ((`mn`,x),_) <- s.as yield x) ++
+//                          (for ((`mn`,x),_) <- s.fs yield x)).toSet - f
+//      println(s"checking if fork $mn/$f is stuck. ${m.next.getOrElse(f, Map())} / ${running.mkString(",")}")
+//      if m.next.getOrElse(f, Map()).isEmpty && running.nonEmpty then
+//        sys.error(s"Stuck at \"$f\" before stopping with pending {${running.mkString(",")}} [@${mn}]")
+
 
   private def endCase(s:State): Map[String,State] =
     for (a, aSt) <- s.as
+        // if activity "a" is ready to finish running
         if (aSt==Run && !s.p.ms(a._1).call.contains(a._2)) ||
           aSt==Done
         nxts <- s.p.ms(a._1).next.get(a._2).toSet // Option[Set]
-        nxt <- nxts // Set[Act|Fork]
+        nxt <- nxts.keySet // Set[Act|Fork]
     yield
       val m = s.p.ms(a._1)
-      val drop = nxts.map(a._1 -> _) + a
+      val drop = nxts.map(kv => a._1 -> kv._1) + a
       if m.activities.contains(nxt) // if nxt is an activity
       then (
         if s.as.contains(a._1 -> nxt) then
@@ -73,15 +97,17 @@ object SeqSOS extends caos.sos.SOS[String,State]:
 
   private def forkCase(s:State) =
     for ((mn,f), nf) <- s.fs
-        if nf== (s.p.ms(mn).next.filter(_._2.contains(f)).size + s.p.ms(mn).start(f).compareTo(false))
+        if nf == // if f is ready to be fired
+            (s.p.ms(mn).next.filter(_._2.contains(f)).size +
+             s.p.ms(mn).start(f).compareTo(false))
     yield
       val m = s.p.ms(mn)
       val newReady: Set[((String,Activity),ActState)] = for
-          nxt <- m.next.getOrElse(f,Set()) // nxt is a fork or an activity
+          nxt <- m.next.getOrElse(f,Map()).keySet // nxt is a fork or an activity
           if m.activities.contains(nxt) // nxt must be an activity
       yield (mn, nxt) -> Ready
       val newForks: Set[((String,Fork),Int)] = for
-          nxt <- m.next.getOrElse(f,Set()) // nxt is a fork or an activity
+          nxt <- m.next.getOrElse(f,Map()).keySet // nxt is a fork or an activity
           if m.forks(nxt) // nxt must be a fork
       yield (mn, nxt) -> (s.fs.getOrElse(f->nxt, 0)+1)
       for (nr,_) <- newReady if s.as.contains(nr) do
@@ -105,6 +131,8 @@ object SeqSOS extends caos.sos.SOS[String,State]:
    *  (2) entering a non-idle activity.
    */
   def next[A>:String](s: State): Set[(A, State)] =
+    // stuck without being last
+//    stuckCase(s)
     // start
     startCase(s) ++
     // stop
@@ -115,3 +143,6 @@ object SeqSOS extends caos.sos.SOS[String,State]:
     forkCase(s) ++
     // call behaviour
     callCase(s)
+
+  override def accepting(s:State): Boolean =
+    s.as.isEmpty && s.fs.isEmpty

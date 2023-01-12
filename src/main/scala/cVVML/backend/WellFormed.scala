@@ -28,7 +28,7 @@ object WellFormed:
 
   /** (4) Check if all activities have predecessors */
   def actHavePred(m:Method,name:String): Result[Unit] =
-    val reach = (for (_,as)<-m.next; a<-as yield a) ++ m.start
+    val reach = (for (_,as)<-m.next; a<-as yield a._1) ++ m.start
     if (m.activities--reach).nonEmpty then
       return Left(s"No predecessor for activity(ies) \"${
         (m.activities--reach).map(x=>x._2).mkString(",")}\" [@ $name].")
