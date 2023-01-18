@@ -39,18 +39,21 @@ object CaosConfig extends Configurator[Program]:
     "EA"
       -> "method Process {\n\tstart act m = \"Define VVML method\"\n  stop act w = call \"Specify workflow\"\n\n\tm -> w\n\t\n  m.\"\":\"Meth Spec\"  => w.\"\":\"Meth Spec\"\n\tm.\"\":\"Meth Spec\"  =>   \"\":\"Meth Spec\"\n\tw.\"\":\"Workf Spec\" =>   \"\":\"Workf Spec\"\n}"
       -> "Simple example that describes how to write VVML diagrams in Enterprise Architect.",
-    "New Syntax"
-      -> "method \"M1\" {\n\t// labelling\n\tact init: \"Initialise\"\n\tact pr2: \"Other Process\"\n  \n\n\t// marking start/stop/fork\n\tstart init\n   // can have labels\n  stop work: \"Nothing more to do\"\n  \n  // possibly labelled transitions\n  init -> work: \"just work\"\n\tinit ->  pr2: \"pre-process\"\n  pr2 -> work\n\n\t// unlabelled artifact flows\n\tinput => init.\"in pin\":Int // Int is a type, not a label\n  init.out => pr2.in\n  pr2.out => work.in\n  work.out => output\n}"
-      -> "Not implemented yet (just to experiment)",
-    "Stuck"
+    "stuck-1"
       -> "method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  w -> work1  w -> work2\n  work1 -> mrg work2 -> mrg\n  pr2 -> mrg\n  \n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\":int\n}"
       -> "Merger can never succeed.",
+    "stuck-2"
+      -> "method M1 {\n\tstart act i = \"Initialise\"\n\t\n  i ->  work1\n  i -> work2\n  work2 -> wait  wait -> work2\n\n\tstop act work1  \n}"
+      -> "Worker 2 never finishes (but worker 1 can finish).",
+    "New Syntax"
+      -> "method \"M1\" {\n\t// labelling\n\tact init: \"Initialise\"\n\tact pr2: \"Other Process\"\n  \n\n\t// marking start/stop/fork\n\tstart init\n   // can have labels\n  stop work: \"Nothing more to do\"\n  fork f // unused\n  \n  // possibly labelled transitions\n  init -> work: \"just work\"\n\tinit ->  pr2: \"pre-process\"\n  pr2 -> work\n\n\t// unlabelled and typed artifact flows\n\tinput:Int => init.\"in pin\":Float // Int is a type, not a label\n  init.out => pr2.in\n  pr2.out => work.in\n  work.out => output\n}"
+      -> "Not implemented yet (just to experiment)",
     "MCF"
       -> "method \"Model Checking Families of Real-Time Specifications\" {\n\tstart fork f\n  fork mg\n  act spec = \"Build annotated<br>RT spec\"\n  act tab = \"Build<br>configuration<br>tables\"\n  act app = \"Apply<br>configurations\"\n  act refs = \"Refine<br>specifications\"\n  act refp = \"Refine<br>param&req\"\n  act ver = \"Verify<br>instances\"\n  act expl = \"State explosion<br>or unexpected res?\"\n  act fail = \"Failed<br>property?\"\n\n  f->spec f->tab\n  spec->mg tab->mg\n  mg->app\n  app->ver\n  ver->expl\n  expl->fail: no\n  stop act fail: no\n  expl->refp: yes\n  fail->refs: yes\n  refs->app refp->app // missing initially\n  \n  Behaviour:\"Behavioural Model\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => tab.beh:\"Behavioural Model\"\n  \"Test scenarios\":Scenarios => tab.scen:Scenarios\n  spec.\"annotated spec\" => refs.in\n  refs.\"annotated spec\"=> app.spec\n  tab.conf=>app.conf tab.conf=>refp.conf tab.conf=>ConfTab\n  refp.rConf=>app.conf \n  app.inst=>ver.inst app.inst=>SpecInstances\n  ver.rep=>expl.rep ver.rep=>fail.rep ver.rep=>VerRep \n}",
   )
 
   val widgets = List(
-    "Parsed" -> view[Program](_.toString,Text),
+//    "Parsed" -> view[Program](_.toString,Text),
     "Well-formed" -> view[Program](cVVML.backend.WellFormed.checkAllPP,Text).expand.moveTo(1),
     "Well-behaved (no data)" -> view[Program](WellBehaved.checkPP, Text).expand.moveTo(1),
 //    "SeqSOS (text)" -> steps(SeqSOS.initial, SeqSOS, SeqSOS.pp, Text),

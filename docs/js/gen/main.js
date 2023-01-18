@@ -18594,65 +18594,60 @@ function $c_LcVVML_frontend_CaosConfig$() {
     throw new $c_s_MatchError(x1)
   }));
   $m_s_package$();
-  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = \"Other Process\"\n\n  init -> work: just work\n  // comment to become ill-behaved\n\tinit ->  pr2: pre-process\n  // comment to become ill-formed\n  pr2 -> work\n  \n\tinput => init.\"in pin\"\n  init.out => pr2.in\n  // comment one of the 2 lines\n  // below to become ill-formed\n  pr2.out => work.in\n  work.out => output\n}", "choices", "Simple example with choices."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  pr2 -> mrg  w -> mrg\n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\"\n}", "fork", "Simple example with concurrency."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = call \"Other Process\"\n\n  init ->  pr2\n  pr2 -> work\n\t\n  input => init.\"pin 1\"\n}\nmethod \"Other Process\" {\n start act think\n stop act think\n}", "call", "Simple example with call behaviour."), new $c_Lcaos_frontend_Configurator$Example("method m1 {\n  start act a1\n  \t= \"Act 1\"\n  stop act a2\n  \t= \"Act 2\"\n    \n  a1.oa:a => a2.ia\n  a2.oa => \"Output pin\":\"Some result\"\n  \n  a1->a2\n  a2->a1\n}", "loop", "Example with loops."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n  start act i = \"Initialise\"\n  fork f\n  stop fork m\n\n  i ->  f\n  f->a1 f->a2 f->a3 f->a4 f->a5 f->a6\n  a1->m a2->m a3->m a4->m a5->m a6->m\n\n  // uncomment to timeout at 2000 states when checking behaviour\n  // f->a7 a7->m\n}", "big fork", "Example with an explosion of states"), new $c_Lcaos_frontend_Configurator$Example("method Process {\n\tstart act m = \"Define VVML method\"\n  stop act w = call \"Specify workflow\"\n\n\tm -> w\n\t\n  m.\"\":\"Meth Spec\"  => w.\"\":\"Meth Spec\"\n\tm.\"\":\"Meth Spec\"  =>   \"\":\"Meth Spec\"\n\tw.\"\":\"Workf Spec\" =>   \"\":\"Workf Spec\"\n}", "EA", "Simple example that describes how to write VVML diagrams in Enterprise Architect."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\t// labelling\n\tact init: \"Initialise\"\n\tact pr2: \"Other Process\"\n  \n\n\t// marking start/stop/fork\n\tstart init\n   // can have labels\n  stop work: \"Nothing more to do\"\n  \n  // possibly labelled transitions\n  init -> work: \"just work\"\n\tinit ->  pr2: \"pre-process\"\n  pr2 -> work\n\n\t// unlabelled artifact flows\n\tinput => init.\"in pin\":Int // Int is a type, not a label\n  init.out => pr2.in\n  pr2.out => work.in\n  work.out => output\n}", "New Syntax", "Not implemented yet (just to experiment)"), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  w -> work1  w -> work2\n  work1 -> mrg work2 -> mrg\n  pr2 -> mrg\n  \n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\":int\n}", "Stuck", "Merger can never succeed."), new $c_Lcaos_frontend_Configurator$Example("method \"Model Checking Families of Real-Time Specifications\" {\n\tstart fork f\n  fork mg\n  act spec = \"Build annotated<br>RT spec\"\n  act tab = \"Build<br>configuration<br>tables\"\n  act app = \"Apply<br>configurations\"\n  act refs = \"Refine<br>specifications\"\n  act refp = \"Refine<br>param&req\"\n  act ver = \"Verify<br>instances\"\n  act expl = \"State explosion<br>or unexpected res?\"\n  act fail = \"Failed<br>property?\"\n\n  f->spec f->tab\n  spec->mg tab->mg\n  mg->app\n  app->ver\n  ver->expl\n  expl->fail: no\n  stop act fail: no\n  expl->refp: yes\n  fail->refs: yes\n  refs->app refp->app // missing initially\n  \n  Behaviour:\"Behavioural Model\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => tab.beh:\"Behavioural Model\"\n  \"Test scenarios\":Scenarios => tab.scen:Scenarios\n  spec.\"annotated spec\" => refs.in\n  refs.\"annotated spec\"=> app.spec\n  tab.conf=>app.conf tab.conf=>refp.conf tab.conf=>ConfTab\n  refp.rConf=>app.conf \n  app.inst=>ver.inst app.inst=>SpecInstances\n  ver.rep=>expl.rep ver.rep=>fail.rep ver.rep=>VerRep \n}", "MCF", "")]));
+  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = \"Other Process\"\n\n  init -> work: just work\n  // comment to become ill-behaved\n\tinit ->  pr2: pre-process\n  // comment to become ill-formed\n  pr2 -> work\n  \n\tinput => init.\"in pin\"\n  init.out => pr2.in\n  // comment one of the 2 lines\n  // below to become ill-formed\n  pr2.out => work.in\n  work.out => output\n}", "choices", "Simple example with choices."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  pr2 -> mrg  w -> mrg\n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\"\n}", "fork", "Simple example with concurrency."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = call \"Other Process\"\n\n  init ->  pr2\n  pr2 -> work\n\t\n  input => init.\"pin 1\"\n}\nmethod \"Other Process\" {\n start act think\n stop act think\n}", "call", "Simple example with call behaviour."), new $c_Lcaos_frontend_Configurator$Example("method m1 {\n  start act a1\n  \t= \"Act 1\"\n  stop act a2\n  \t= \"Act 2\"\n    \n  a1.oa:a => a2.ia\n  a2.oa => \"Output pin\":\"Some result\"\n  \n  a1->a2\n  a2->a1\n}", "loop", "Example with loops."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n  start act i = \"Initialise\"\n  fork f\n  stop fork m\n\n  i ->  f\n  f->a1 f->a2 f->a3 f->a4 f->a5 f->a6\n  a1->m a2->m a3->m a4->m a5->m a6->m\n\n  // uncomment to timeout at 2000 states when checking behaviour\n  // f->a7 a7->m\n}", "big fork", "Example with an explosion of states"), new $c_Lcaos_frontend_Configurator$Example("method Process {\n\tstart act m = \"Define VVML method\"\n  stop act w = call \"Specify workflow\"\n\n\tm -> w\n\t\n  m.\"\":\"Meth Spec\"  => w.\"\":\"Meth Spec\"\n\tm.\"\":\"Meth Spec\"  =>   \"\":\"Meth Spec\"\n\tw.\"\":\"Workf Spec\" =>   \"\":\"Workf Spec\"\n}", "EA", "Simple example that describes how to write VVML diagrams in Enterprise Architect."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  w -> work1  w -> work2\n  work1 -> mrg work2 -> mrg\n  pr2 -> mrg\n  \n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\":int\n}", "stuck-1", "Merger can never succeed."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n\t\n  i ->  work1\n  i -> work2\n  work2 -> wait  wait -> work2\n\n\tstop act work1  \n}", "stuck-2", "Worker 2 never finishes (but worker 1 can finish)."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\t// labelling\n\tact init: \"Initialise\"\n\tact pr2: \"Other Process\"\n  \n\n\t// marking start/stop/fork\n\tstart init\n   // can have labels\n  stop work: \"Nothing more to do\"\n  fork f // unused\n  \n  // possibly labelled transitions\n  init -> work: \"just work\"\n\tinit ->  pr2: \"pre-process\"\n  pr2 -> work\n\n\t// unlabelled and typed artifact flows\n\tinput:Int => init.\"in pin\":Float // Int is a type, not a label\n  init.out => pr2.in\n  pr2.out => work.in\n  work.out => output\n}", "New Syntax", "Not implemented yet (just to experiment)"), new $c_Lcaos_frontend_Configurator$Example("method \"Model Checking Families of Real-Time Specifications\" {\n\tstart fork f\n  fork mg\n  act spec = \"Build annotated<br>RT spec\"\n  act tab = \"Build<br>configuration<br>tables\"\n  act app = \"Apply<br>configurations\"\n  act refs = \"Refine<br>specifications\"\n  act refp = \"Refine<br>param&req\"\n  act ver = \"Verify<br>instances\"\n  act expl = \"State explosion<br>or unexpected res?\"\n  act fail = \"Failed<br>property?\"\n\n  f->spec f->tab\n  spec->mg tab->mg\n  mg->app\n  app->ver\n  ver->expl\n  expl->fail: no\n  stop act fail: no\n  expl->refp: yes\n  fail->refs: yes\n  refs->app refp->app // missing initially\n  \n  Behaviour:\"Behavioural Model\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => tab.beh:\"Behavioural Model\"\n  \"Test scenarios\":Scenarios => tab.scen:Scenarios\n  spec.\"annotated spec\" => refs.in\n  refs.\"annotated spec\"=> app.spec\n  tab.conf=>app.conf tab.conf=>refp.conf tab.conf=>ConfTab\n  refp.rConf=>app.conf \n  app.inst=>ver.inst app.inst=>SpecInstances\n  ver.rep=>expl.rep ver.rep=>fail.rep ver.rep=>VerRep \n}", "MCF", "")]));
   this.LcVVML_frontend_CaosConfig$__f_examples = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems);
   $m_s_package$();
-  var $$x8 = $m_sr_ScalaRunTime$();
-  var y = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((_$1) => {
-    var _$1$1 = $as_LcVVML_lang_Syntax$Program(_$1);
-    return $m_sr_ScalaRunTime$()._toString__s_Product__T(_$1$1)
-  })), $m_Lcaos_view_Text$());
-  var $$x7 = new $c_T2("Parsed", y);
-  var this$59 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$1) => {
+  var $$x7 = $m_sr_ScalaRunTime$();
+  var this$63 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$1) => {
     var p$2 = $as_LcVVML_lang_Syntax$Program(p$1);
     return $m_LcVVML_backend_WellFormed$().checkAllPP__LcVVML_lang_Syntax$Program__T(p$2)
   })), $m_Lcaos_view_Text$());
-  var this$60 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$59);
-  var y$1 = $f_Lcaos_frontend_widgets_WidgetInfo__moveTo__I__Lcaos_frontend_widgets_WidgetInfo(this$60, 1);
-  var $$x6 = new $c_T2("Well-formed", y$1);
-  var this$63 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$2$1) => {
+  var this$64 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$63);
+  var y = $f_Lcaos_frontend_widgets_WidgetInfo__moveTo__I__Lcaos_frontend_widgets_WidgetInfo(this$64, 1);
+  var $$x6 = new $c_T2("Well-formed", y);
+  var this$67 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$2$1) => {
     var p$3 = $as_LcVVML_lang_Syntax$Program(p$2$1);
     return $m_LcVVML_backend_WellBehaved$().checkPP__LcVVML_lang_Syntax$Program__T(p$3)
   })), $m_Lcaos_view_Text$());
-  var this$64 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$63);
-  var y$2 = $f_Lcaos_frontend_widgets_WidgetInfo__moveTo__I__Lcaos_frontend_widgets_WidgetInfo(this$64, 1);
-  var $$x5 = new $c_T2("Well-behaved (no data)", y$2);
-  var this$67 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$3$1) => {
+  var this$68 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$67);
+  var y$1 = $f_Lcaos_frontend_widgets_WidgetInfo__moveTo__I__Lcaos_frontend_widgets_WidgetInfo(this$68, 1);
+  var $$x5 = new $c_T2("Well-behaved (no data)", y$1);
+  var this$71 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$3$1) => {
     var p$4 = $as_LcVVML_lang_Syntax$Program(p$3$1);
     return $m_LcVVML_backend_Mermaid$().apply__LcVVML_lang_Syntax$Program__T(p$4)
   })), $m_Lcaos_view_Mermaid$());
-  var y$3 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$67);
-  var $$x4 = new $c_T2("Diagram", y$3);
-  var y$5 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((x) => {
+  var y$2 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$71);
+  var $$x4 = new $c_T2("Diagram", y$2);
+  var y$4 = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((x) => {
     var x$1 = $as_LcVVML_lang_Syntax$Program(x);
     var $$x2 = $m_LcVVML_backend_Mermaid$();
     var ms = $as_sci_Map(x$1.LcVVML_lang_Syntax$Program__f_ms.map__F1__sc_IterableOps(new $c_sjsr_AnonFunction1(((kv) => {
       var kv$1 = $as_T2(kv);
       var self = kv$1.T2__f__1;
-      var ev$22 = $as_T(self);
-      var y$4 = $as_LcVVML_lang_Syntax$Method(kv$1.T2__f__2).noFlow__LcVVML_lang_Syntax$Method();
-      return new $c_T2(ev$22, y$4)
+      var ev$23 = $as_T(self);
+      var y$3 = $as_LcVVML_lang_Syntax$Method(kv$1.T2__f__2).noFlow__LcVVML_lang_Syntax$Method();
+      return new $c_T2(ev$23, y$3)
     }))));
     var main = x$1.LcVVML_lang_Syntax$Program__f_main;
     return $$x2.apply__LcVVML_lang_Syntax$Program__T(new $c_LcVVML_lang_Syntax$Program(ms, main))
   })), $m_Lcaos_view_Mermaid$());
-  var $$x3 = new $c_T2("Diagram (just data)", y$5);
-  var y$6 = $m_Lcaos_frontend_Configurator$().steps__F1__Lcaos_sos_SOS__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$4$1) => {
+  var $$x3 = new $c_T2("Diagram (just data)", y$4);
+  var y$5 = $m_Lcaos_frontend_Configurator$().steps__F1__Lcaos_sos_SOS__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$4$1) => {
     var p$5 = $as_LcVVML_lang_Syntax$Program(p$4$1);
     return $m_LcVVML_backend_SeqSOS$().initial__LcVVML_lang_Syntax$Program__LcVVML_backend_SeqSOS$State(p$5)
   })), $m_LcVVML_backend_SeqSOS$(), new $c_sjsr_AnonFunction1(((st) => {
     var st$1 = $as_LcVVML_backend_SeqSOS$State(st);
     return $m_LcVVML_backend_Mermaid$().apply__LcVVML_backend_SeqSOS$State__T(st$1)
   })), $m_Lcaos_view_Mermaid$());
-  var $$x1 = new $c_T2("Run (no data)", y$6);
-  var y$7 = $m_Lcaos_frontend_Configurator$().lts__F1__Lcaos_sos_SOS__F1__F1__I__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$5$1) => {
+  var $$x1 = new $c_T2("Run (no data)", y$5);
+  var y$6 = $m_Lcaos_frontend_Configurator$().lts__F1__Lcaos_sos_SOS__F1__F1__I__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((p$5$1) => {
     var p$6 = $as_LcVVML_lang_Syntax$Program(p$5$1);
     return $m_LcVVML_backend_SeqSOS$().initial__LcVVML_lang_Syntax$Program__LcVVML_backend_SeqSOS$State(p$6)
-  })), $m_LcVVML_backend_SeqSOS$(), new $c_sjsr_AnonFunction1(((_$2) => {
-    $as_LcVVML_backend_SeqSOS$State(_$2);
+  })), $m_LcVVML_backend_SeqSOS$(), new $c_sjsr_AnonFunction1(((_$1) => {
+    $as_LcVVML_backend_SeqSOS$State(_$1);
     return " "
   })), $m_Lcaos_frontend_Configurator$().lts$default$4__F1(), 80);
-  var elems$1 = $$x8.wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([$$x7, $$x6, $$x5, $$x4, $$x3, $$x1, new $c_T2("Run All (no data)", y$7)]));
+  var elems$1 = $$x7.wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([$$x6, $$x5, $$x4, $$x3, $$x1, new $c_T2("Run All (no data)", y$6)]));
   this.LcVVML_frontend_CaosConfig$__f_widgets = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems$1)
 }
 $c_LcVVML_frontend_CaosConfig$.prototype = new $h_O();
