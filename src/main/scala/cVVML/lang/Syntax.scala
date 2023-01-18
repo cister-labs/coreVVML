@@ -5,17 +5,18 @@ object Syntax:
   case class Program(ms:Map[String,Method], main:String)
 
   type Lbl[A] = Map[A,String]
+  type Edge = (Activity|Fork|0, Activity|Fork|0)
   case class Method(activities:Map[Activity,String], // all activities and descriptions
                     start: Set[Activity|Fork], // initial activities
                     stop: Set[Activity|Fork],  // terminal activities
                     forks:Set[Fork], // all forks/merges
                     src: Set[Pin], // source pins of activities and the method
                     snk: Set[Pin], // sink pins of activities and the method
-                    next: Map[Activity|Fork, Map[Activity|Fork,String]], // sequence arrow
+                    next: Map[Activity|Fork, Set[Activity|Fork]], // sequence arrow
                     dataflow: Map[Pin, Set[Pin]], // artifact arrow
                     call: Map[Activity,MethodName],
                     nodeLbl:Lbl[Activity],
-                    edgeLbl:Lbl[(Activity|Fork|0, Activity|Fork|0)]): // call behaviour of an activity
+                    edgeLbl:Lbl[Edge]): // call behaviour of an activity
     /** all input pins of an activity or the method */
     def inputs(a:Option[Activity]): Set[Pin] =
       src.filter(_.act==a)
@@ -28,7 +29,7 @@ object Syntax:
         start++m2.start,       stop++m2.stop,
         forks++m2.forks,
         src++m2.src,           snk++m2.snk,
-        relJoinL(next,m2.next), relJoin(dataflow,m2.dataflow),
+        relJoin(next,m2.next), relJoin(dataflow,m2.dataflow),
         call++m2.call,
         relStrJoin(nodeLbl, m2.nodeLbl),
         relStrJoin(edgeLbl, m2.edgeLbl)
@@ -95,7 +96,7 @@ object Syntax:
       forks = Set("1","2"), // forks -- needed to paint them differently(?)
       src = Set(min, x3o),
       snk = Set(mout, x3i, x4i),
-      next = Map("1"->Map("x3"->"","x4"->""), "x3"->Map("2"->""), "x4"->Map("2"->"")), // next
+      next = Map("1"->Set("x3","x4"), "x3"->Set("2"), "x4"->Set("2")), // next
       dataflow = Map(min->Set(x3i), x3o->Set(mout,x4i)),
       call = Map(),
       nodeLbl = Map(),

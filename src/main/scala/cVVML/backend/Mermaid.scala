@@ -11,7 +11,7 @@ object Mermaid:
     str.replaceAll(" ","_")
 
   def apply(st:State): String =
-    val s = State(Program(st.p.ms.map(kv=>kv._1->kv._2.noData),st.p.main),st.as,st.fs,st.ret)
+    val s = State(Program(st.p.ms.map(kv=>kv._1->kv._2.noData),st.p.main),st.as,st.fs,st.ret,st.starting)
     def getForkSt(m:String,f:Fork,n:Int) =
       val pred = for
         meth <- s.p.ms.get(m).toSet
@@ -63,7 +63,7 @@ object Mermaid:
     Method(m.activities.map(x=>(upd(x._1)->x._2)),
       m.start.map(upd),m.stop.map(upd),m.forks.map(upd),
       m.src.map(updp),m.snk.map(updp),
-      m.next.map(x=>upd(x._1)->x._2.map(kv=>upd(kv._1)->kv._2)),
+      m.next.map(x=>upd(x._1)->x._2.map(upd)), //(kv=>upd(kv._1)->kv._2)),
       m.dataflow.map(x=>updp(x._1)->x._2.map(updp)),
       m.call.map(x=>upd(x._1)->x._2),
       m.activities.keySet.map(x=>upd(x)->x).toMap ++ m.nodeLbl.map(x=>upd(x._1)->x._2),
@@ -90,9 +90,9 @@ object Mermaid:
             ).mkString(s"\n$s")}
       |${s}${m.forks.map(x=>s"$x[   ]:::tr").mkString(s"\n$s")}
       |${s}${m.start.map(x=>s"Init_$nm --> $x").mkString(s"\n$s")}
-      |${s}${m.stop.map(x=>s"$x --> Stop_$nm").mkString(s"\n$s")}
+      |${s}${m.stop.map(x=>s"$x --\" ${m.edgeLbl.getOrElse(x->0,"")}\"--> Stop_$nm").mkString(s"\n$s")}
       |${s}${(for (from,tos)<-m.next; to<-tos yield
-        s"$from --\" ${to._2}\"--> ${to._1}").mkString(s"\n$s")}
+        s"$from --\" ${m.edgeLbl.getOrElse(from->to,"")}\"--> ${to}").mkString(s"\n$s")}
       |${s}${(for pin1<-m.src; pin2<-m.dataflow.getOrElse(pin1,Set())
                   if pin1.act.nonEmpty && pin2.act.nonEmpty yield
         s"${pin1.act.get} -.\"${pin1.pp}->${pin2.pp}\".-> ${pin2.act.get}"

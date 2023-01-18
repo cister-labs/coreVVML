@@ -55,10 +55,10 @@ object Parser:
 //    (string("main")~sp)*>id
 
   def method : P[(String,Method)] =
-    (string("method") *> id.sp ~
+    (string("method").s *> id.s ~
 //      (char('(') *> unqualPin.repSep0(char(',').sp).sp <* char(')')) ~
 //      (char('(') *> unqualPin.repSep0(char(',').sp).sp <* char(')')).sp ~
-      (char('{') *> declarations.sp <* char('}'))
+      (char('{').s *> declarations.s <* char('}'))
       )
       .map(m => m._1 -> Method(m._2.activities -- m._2.forks, m._2.start, m._2.stop,
         m._2.forks,
@@ -99,9 +99,12 @@ object Parser:
 
   def stop: P[Method] =
     (string("stop")~sps) *>
-      ((activity~label.?).map(x =>
+      (((activity<*sps)~label.?).map(x =>
         Method(x._1.activities, Set(), x._1.activities.keySet,
-               Set(), Set(), Set(), Map(), Map(), x._1.call, x._1.nodeLbl, x._1.edgeLbl)) |
+               Set(), Set(), Set(), Map(), Map(), x._1.call, x._1.nodeLbl,
+               if x._2.isDefined
+               then x._1.edgeLbl+(((x._1.activities.head._1,0):Syntax.Edge)->x._2.get)
+               else x._1.edgeLbl)) |
       fork.map(x =>
         Method(Map(), Set(), x.forks.toSet,
                x.forks, Set(), Set(), Map(), Map(), x.call, x.nodeLbl, x.edgeLbl)))
@@ -120,9 +123,9 @@ object Parser:
     (varName ~ (sps *> (flowCont|dataflowCont))).map( x => x._2(x._1))
 
   def flowCont: P[String=>Method] =
-    ((string("->")~sps) *> varName ~ label.?).map( x => (name =>
+    ((string("->")~sps) *> (varName <* sps) ~ label.?).map( x => (name =>
       Method(Map(name->name,x._1->x._1), Set(), Set(), Set(), Set(), Set(),
-             Map(name->Map(x._1->x._2.getOrElse(""))), Map(), Map(),
+             Map(name->Set(x._1)), Map(), Map(),
              Map(),
              if x._2.isDefined then Map((name,x._1)->x._2.get) else Map()
       )))
@@ -172,8 +175,10 @@ object Parser:
 
   extension[A] (parser:P[A])
     def sp = parser.surroundedBy(sps)
+    def s = parser <* sps
   extension[A] (parser:P0[A])
     def sp = parser.surroundedBy(sps)
+    def s = parser <* sps
 
   /** letters and digits and _ */
   def alphaDigit: P[Char] =
