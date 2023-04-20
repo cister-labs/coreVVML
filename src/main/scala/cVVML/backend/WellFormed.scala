@@ -52,7 +52,7 @@ object WellFormed:
     for (act,mname)<-m.call do
       val called = p.ms.get(mname) match
         case Some(x)=>x
-        case None => return Left(s"No method named $mname found.")
+        case None => return Left(s"No method named `$mname\' found.")
       val minpins = called.inputs(None).map(_.name)
       val moutpins = called.outputs(None).map(_.name)
       val ainpins = m.inputs(Some(act)).map(_.name)

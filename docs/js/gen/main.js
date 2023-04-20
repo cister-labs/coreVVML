@@ -1095,6 +1095,97 @@ var $d_I = new $TypeData().initPrim(0, "I", "int", $ac_I, Int32Array);
 var $d_J = new $TypeData().initPrim(null, "J", "long", $ac_J, (void 0));
 var $d_F = new $TypeData().initPrim(0.0, "F", "float", $ac_F, Float32Array);
 var $d_D = new $TypeData().initPrim(0.0, "D", "double", $ac_D, Float64Array);
+function $p_LcVVML_backend_Mermaid$__getForkSt__LcVVML_backend_SeqSOS$State__T__T__I__T($thiz, s, m, f, n) {
+  var this$1 = $m_s_Option$().option2Iterable__s_Option__sc_Iterable(s.LcVVML_backend_SeqSOS$State__f_p.LcVVML_lang_Syntax$Program__f_ms.get__O__s_Option(m));
+  var pred = $as_sci_Set($m_sci_Set$().from__sc_IterableOnce__sci_Set(this$1).flatMap__F1__O(new $c_sjsr_AnonFunction1(((meth) => {
+    var meth$1 = $as_LcVVML_lang_Syntax$Method(meth);
+    return $as_sc_IterableOnce(meth$1.LcVVML_lang_Syntax$Method__f_next.withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
+      var x$1$1 = $as_T2(x$1);
+      return ((x$1$1 !== null) && ($as_T(x$1$1.T2__f__1), $as_sci_Set(x$1$1.T2__f__2), true))
+    }))).withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1$2) => {
+      var x$1$3 = $as_T2(x$1$2);
+      if ((x$1$3 !== null)) {
+        $as_T(x$1$3.T2__f__1);
+        var dest$1 = $as_sci_Set(x$1$3.T2__f__2);
+        return dest$1.contains__O__Z(f)
+      };
+      throw new $c_s_MatchError(x$1$3)
+    }))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$3$1) => {
+      var x$1$4 = $as_T2(x$1$3$1);
+      if ((x$1$4 !== null)) {
+        var a$2 = $as_T(x$1$4.T2__f__1);
+        $as_sci_Set(x$1$4.T2__f__2);
+        return a$2
+      };
+      throw new $c_s_MatchError(x$1$4)
+    }))))
+  }))));
+  var need = pred.size__I();
+  return ((n >= need) ? "Ready" : "NotReady")
+}
+function $p_LcVVML_backend_Mermaid$__markState__LcVVML_backend_SeqSOS$State__T($thiz, s) {
+  var this$3 = $as_sc_IterableOnceOps(s.LcVVML_backend_SeqSOS$State__f_as.withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
+    var x$1$1 = $as_T2(x$1);
+    if ((x$1$1 !== null)) {
+      var x11 = $as_T2(x$1$1.T2__f__1);
+      if ((x11 !== null)) {
+        $as_T(x11.T2__f__1);
+        $as_T(x11.T2__f__2);
+        $as_LcVVML_backend_SeqSOS$ActState(x$1$1.T2__f__2);
+        return true
+      }
+    };
+    return false
+  }))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$2) => {
+    var x$1$3 = $as_T2(x$1$2);
+    if ((x$1$3 !== null)) {
+      var x16 = $as_T2(x$1$3.T2__f__1);
+      if ((x16 !== null)) {
+        var m$1 = $as_T(x16.T2__f__1);
+        var a$1 = $as_T(x16.T2__f__2);
+        var aSt$1 = $as_LcVVML_backend_SeqSOS$ActState(x$1$3.T2__f__2);
+        return (((($f_T__replaceAll__T__T__T(m$1, " ", "_") + "_m") + a$1) + ":::") + aSt$1)
+      }
+    };
+    throw new $c_s_MatchError(x$1$3)
+  }))));
+  var $$x2 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$3, "", "\n", "");
+  var this$5 = $as_sc_IterableOnceOps(s.LcVVML_backend_SeqSOS$State__f_fs.withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1$3$1) => {
+    var x$1$4 = $as_T2(x$1$3$1);
+    if ((x$1$4 !== null)) {
+      var x21 = $as_T2(x$1$4.T2__f__1);
+      if ((x21 !== null)) {
+        $as_T(x21.T2__f__1);
+        $as_T(x21.T2__f__2);
+        $uI(x$1$4.T2__f__2);
+        return true
+      }
+    };
+    return false
+  }))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$4$1) => {
+    var x$1$5 = $as_T2(x$1$4$1);
+    if ((x$1$5 !== null)) {
+      var x26 = $as_T2(x$1$5.T2__f__1);
+      if ((x26 !== null)) {
+        var m$3 = $as_T(x26.T2__f__1);
+        var f$1 = $as_T(x26.T2__f__2);
+        var n$1 = $uI(x$1$5.T2__f__2);
+        return (((($f_T__replaceAll__T__T__T(m$3, " ", "_") + "_m") + f$1) + ":::") + $p_LcVVML_backend_Mermaid$__getForkSt__LcVVML_backend_SeqSOS$State__T__T__I__T($thiz, s, m$3, f$1, n$1))
+      }
+    };
+    throw new $c_s_MatchError(x$1$5)
+  }))));
+  var $$x1 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$5, "", "\n", "");
+  var this$6 = s.LcVVML_backend_SeqSOS$State__f_ret;
+  if (this$6.isEmpty__Z()) {
+    var this$7 = $m_s_None$()
+  } else {
+    var arg1 = this$6.get__O();
+    var s$1 = $as_LcVVML_backend_SeqSOS$State(arg1);
+    var this$7 = new $c_s_Some($p_LcVVML_backend_Mermaid$__markState__LcVVML_backend_SeqSOS$State__T($thiz, s$1))
+  };
+  return (((($$x2 + "\n") + $$x1) + "\n") + (this$7.isEmpty__Z() ? "" : this$7.get__O()))
+}
 function $p_LcVVML_backend_Mermaid$__qualify__T__LcVVML_lang_Syntax$Method__LcVVML_lang_Syntax$Method($thiz, name, m) {
   $m_LcVVML_lang_Syntax$Method$();
   var activities = $as_sci_Map(m.LcVVML_lang_Syntax$Method__f_activities.map__F1__sc_IterableOps(new $c_sjsr_AnonFunction1(((x) => {
@@ -1166,34 +1257,6 @@ function $p_LcVVML_backend_Mermaid$__qualify__T__LcVVML_lang_Syntax$Method__LcVV
     return new $c_T2(self$6, y$5)
   }))));
   return new $c_LcVVML_lang_Syntax$Method(activities, start, stop, forks, src, snk, next, dataflow, call, nodeLbl, edgeLbl)
-}
-function $p_LcVVML_backend_Mermaid$__getForkSt$1__LcVVML_backend_SeqSOS$State__T__T__I__T($thiz, s$1, m, f, n) {
-  var this$1 = $m_s_Option$().option2Iterable__s_Option__sc_Iterable(s$1.LcVVML_backend_SeqSOS$State__f_p.LcVVML_lang_Syntax$Program__f_ms.get__O__s_Option(m));
-  var pred = $as_sci_Set($m_sci_Set$().from__sc_IterableOnce__sci_Set(this$1).flatMap__F1__O(new $c_sjsr_AnonFunction1(((meth) => {
-    var meth$1 = $as_LcVVML_lang_Syntax$Method(meth);
-    return $as_sc_IterableOnce(meth$1.LcVVML_lang_Syntax$Method__f_next.withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
-      var x$1$1 = $as_T2(x$1);
-      return ((x$1$1 !== null) && ($as_T(x$1$1.T2__f__1), $as_sci_Set(x$1$1.T2__f__2), true))
-    }))).withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1$2) => {
-      var x$1$3 = $as_T2(x$1$2);
-      if ((x$1$3 !== null)) {
-        $as_T(x$1$3.T2__f__1);
-        var dest$1 = $as_sci_Set(x$1$3.T2__f__2);
-        return dest$1.contains__O__Z(f)
-      };
-      throw new $c_s_MatchError(x$1$3)
-    }))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$3$1) => {
-      var x$1$4 = $as_T2(x$1$3$1);
-      if ((x$1$4 !== null)) {
-        var a$2 = $as_T(x$1$4.T2__f__1);
-        $as_sci_Set(x$1$4.T2__f__2);
-        return a$2
-      };
-      throw new $c_s_MatchError(x$1$4)
-    }))))
-  }))));
-  var need = pred.size__I();
-  return ((n >= need) ? "Ready" : "NotReady")
 }
 function $p_LcVVML_backend_Mermaid$__upd$1__T__T__T($thiz, name$1, s) {
   return (($f_T__replaceAll__T__T__T(name$1, " ", "_") + "_m") + s)
@@ -1267,59 +1330,7 @@ $c_LcVVML_backend_Mermaid$.prototype.apply__LcVVML_backend_SeqSOS$State__T = (fu
   var starting = st.LcVVML_backend_SeqSOS$State__f_starting;
   var s = new $c_LcVVML_backend_SeqSOS$State(p, as, fs, ret, starting);
   $m_sc_StringOps$();
-  var $$x2 = this.apply__LcVVML_lang_Syntax$Program__T(s.LcVVML_backend_SeqSOS$State__f_p);
-  var this$6 = $as_sc_IterableOnceOps(s.LcVVML_backend_SeqSOS$State__f_as.withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
-    var x$1$1 = $as_T2(x$1);
-    if ((x$1$1 !== null)) {
-      var x11 = $as_T2(x$1$1.T2__f__1);
-      if ((x11 !== null)) {
-        $as_T(x11.T2__f__1);
-        $as_T(x11.T2__f__2);
-        $as_LcVVML_backend_SeqSOS$ActState(x$1$1.T2__f__2);
-        return true
-      }
-    };
-    return false
-  }))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$2) => {
-    var x$1$3 = $as_T2(x$1$2);
-    if ((x$1$3 !== null)) {
-      var x16 = $as_T2(x$1$3.T2__f__1);
-      if ((x16 !== null)) {
-        var m$1 = $as_T(x16.T2__f__1);
-        var a$1 = $as_T(x16.T2__f__2);
-        var aSt$1 = $as_LcVVML_backend_SeqSOS$ActState(x$1$3.T2__f__2);
-        return (((($f_T__replaceAll__T__T__T(m$1, " ", "_") + "_m") + a$1) + ":::") + aSt$1)
-      }
-    };
-    throw new $c_s_MatchError(x$1$3)
-  }))));
-  var $$x1 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$6, "", "\n", "");
-  var this$7 = $as_sc_IterableOnceOps(s.LcVVML_backend_SeqSOS$State__f_fs.withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1$3$1) => {
-    var x$1$4 = $as_T2(x$1$3$1);
-    if ((x$1$4 !== null)) {
-      var x21 = $as_T2(x$1$4.T2__f__1);
-      if ((x21 !== null)) {
-        $as_T(x21.T2__f__1);
-        $as_T(x21.T2__f__2);
-        $uI(x$1$4.T2__f__2);
-        return true
-      }
-    };
-    return false
-  }))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$4$1) => {
-    var x$1$5 = $as_T2(x$1$4$1);
-    if ((x$1$5 !== null)) {
-      var x26 = $as_T2(x$1$5.T2__f__1);
-      if ((x26 !== null)) {
-        var m$3 = $as_T(x26.T2__f__1);
-        var f$1 = $as_T(x26.T2__f__2);
-        var n$1 = $uI(x$1$5.T2__f__2);
-        return (((($f_T__replaceAll__T__T__T(m$3, " ", "_") + "_m") + f$1) + ":::") + $p_LcVVML_backend_Mermaid$__getForkSt$1__LcVVML_backend_SeqSOS$State__T__T__I__T(this, s, m$3, f$1, n$1))
-      }
-    };
-    throw new $c_s_MatchError(x$1$5)
-  }))));
-  var x = ((((($$x2 + "\n       |classDef Ready fill:#bbf,stroke-width:3pt,stroke:#228;\n       |classDef NotReady fill:#bbf,stroke-width:3pt,stroke:#88b;\n       |classDef Run fill:#fc8,stroke-width:4pt,stroke:#964;\n       |classDef Done fill:#f88,stroke-width:4pt,stroke:#700;\n       |") + $$x1) + "\n       |") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$7, "", "\n", "")) + "\n       |");
+  var x = (((this.apply__LcVVML_lang_Syntax$Program__T(s.LcVVML_backend_SeqSOS$State__f_p) + "\n       |classDef Ready fill:#bbf,stroke-width:3pt,stroke:#228;\n       |classDef NotReady fill:#bbf,stroke-width:3pt,stroke:#88b;\n       |classDef Run fill:#fc8,stroke-width:4pt,stroke:#964;\n       |classDef Done fill:#f88,stroke-width:4pt,stroke:#700;\n       |") + $p_LcVVML_backend_Mermaid$__markState__LcVVML_backend_SeqSOS$State__T(this, s)) + "\n       |");
   return $m_sc_StringOps$().stripMargin$extension__T__C__T(x, 124)
 });
 $c_LcVVML_backend_Mermaid$.prototype.apply__LcVVML_lang_Syntax$Program__T = (function(p) {
@@ -1589,7 +1600,7 @@ function $p_LcVVML_backend_WellBehaved$__aux$1__sci_Set__sci_Set__I__I__T3($thiz
           var x$1 = $as_T2(x$3);
           return (((("\"" + x$1.T2__f__1) + "/") + x$1.T2__f__2) + "\"")
         }))));
-        $$x1.error__T__E((("Suck at {" + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$7, "", ",", "")) + "} and cannot stop."))
+        $$x1.error__T__E((("Stuck at {" + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$7, "", ",", "")) + "} and cannot stop."))
       };
       var this$8 = next$tailLocal1;
       var this$9 = this$8.excl__O__sci_SetOps(x83);
@@ -1999,7 +2010,7 @@ $c_LcVVML_backend_WellFormed$.prototype.callsOK__LcVVML_lang_Syntax$Method__T__L
             var x$2 = $m_s_None$();
             if ((x$2 === x19)) {
               $m_s_package$();
-              var value = (("No method named " + mname$1) + " found.");
+              var value = (("No method named `" + mname$1) + "' found.");
               throw new $c_sr_NonLocalReturnControl(nonLocalReturnKey2, new $c_s_util_Left(value))
             };
             throw new $c_s_MatchError(x19)
@@ -3310,7 +3321,7 @@ $c_Lcaos_frontend_Site$.prototype.initSite__Lcaos_frontend_Configurator__V = (fu
   var x = $as_T($m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().URL);
   var xs = $$x1.split$extension__T__C__AT(x, 63);
   var this$4 = $$x2.wrapRefArray__AO__scm_ArraySeq$ofRef($asArrayOf_O($m_sc_ArrayOps$().drop$extension__O__I__O(xs, 1), 1));
-  var urlQuery = $f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_sc_IterableOnceOps__mkString__T__T__T__T(this$4, "", "?", ""), "%2F", "/"), "%3C", "<"), "%26", "&"), "%3E", ">"), "%20", " "), "%23", "#"), "%24", "$"), "%7B", "{"), "%2B", "+"), "%7D", "}"), "%2C", ","), "%7C", "|"), "%3A", ":"), "%5E", "^"), "%3B", ";"), "%7E", "~"), "%3F", "?"), "%5B", "["), "%40", "@"), "%5D", "]"), "%22", "\""), "%60", "`");
+  var urlQuery = $f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_sc_IterableOnceOps__mkString__T__T__T__T(this$4, "", "?", ""), "%2F", "/"), "%3C", "<"), "%26", "&"), "%3E", ">"), "%20", " "), "%23", "#"), "%24", "$"), "%7B", "{"), "%2B", "+"), "%7D", "}"), "%2C", ","), "%7C", "|"), "%3A", ":"), "%5E", "^"), "%3B", ";"), "%7E", "~"), "%3F", "?"), "%5B", "["), "%40", "@"), "%5D", "]"), "%22", "\""), "%60", "`"), "%28", "("), "%29", ")");
   matchResult1: {
     var mainExample;
     var x1 = config.examples__sc_Iterable().find__F1__s_Option(new $c_sjsr_AnonFunction1(((_$6) => {
@@ -4243,7 +4254,7 @@ function $p_Lcaos_sos_SOS$__ids$1__sr_IntRef__sr_ObjectRef__O__I($thiz, i$1, _id
   }
 }
 function $p_Lcaos_sos_SOS$__fix$1__T__T($thiz, s) {
-  return $f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T((("\"" + s) + "\""), "<", "&lt;"), ">", "&gt;"), "\n", "<br>")
+  return $f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T($f_T__replaceAll__T__T__T((("\" " + s) + "\""), "<", "&lt;"), ">", "&gt;"), "\n", "<br>")
 }
 function $p_Lcaos_sos_SOS$__aux$1__Lcaos_sos_SOS__F1__F1__sr_IntRef__sr_ObjectRef__sci_Set__sci_Set__I__T($thiz, sos$5, showSt$1, showAct$1, i$2, _ids$2, next, done, limit) {
   var next$tailLocal1 = next;
@@ -14219,6 +14230,9 @@ $c_sc_StringOps$.prototype.split$extension__T__C__AT = (function(this$, separato
   var regex = $m_sc_StringOps$().escape$extension__T__C__T(this$, separator);
   return $f_T__split__T__I__AT(this$, regex, 0)
 });
+$c_sc_StringOps$.prototype.$less$extension__T__T__Z = (function(this$, that) {
+  return (($m_sc_StringOps$(), $f_T__compareTo__T__I(this$, that)) < 0)
+});
 $c_sc_StringOps$.prototype.head$extension__T__C = (function(this$) {
   if ((this$ === "")) {
     throw $ct_ju_NoSuchElementException__T__(new $c_ju_NoSuchElementException(), "head of empty String")
@@ -18249,9 +18263,9 @@ function $p_LcVVML_backend_SeqSOS$__stopCase__LcVVML_backend_SeqSOS$State__sci_S
           var this$17 = $as_sci_Set(res.sr_ObjectRef__f_elem);
           var self = ((("stop-" + mn$2) + "/") + a$2);
           var elem$2 = new $c_T2(self, nextSt);
-          var ev$29 = $as_sci_Set(this$17.incl__O__sci_SetOps(elem$2));
-          res.sr_ObjectRef__f_elem = ev$29;
-          ev$29 = null;
+          var ev$30 = $as_sci_Set(this$17.incl__O__sci_SetOps(elem$2));
+          res.sr_ObjectRef__f_elem = ev$30;
+          ev$30 = null;
           break matchResult9
         }
       };
@@ -18443,16 +18457,24 @@ function $p_LcVVML_backend_SeqSOS$__forkCase__LcVVML_backend_SeqSOS$State__sci_M
           };
           throw new $c_s_MatchError(x$1$7)
         })));
-        var self$2 = ((("sync-" + mn$2) + "/") + f$2);
         var p = s.LcVVML_backend_SeqSOS$State__f_p;
         var as = $as_sci_Map(s.LcVVML_backend_SeqSOS$State__f_as.$plus$plus__sc_IterableOnce__sc_IterableOps(newReady));
-        var this$22 = s.LcVVML_backend_SeqSOS$State__f_fs;
+        var this$21 = s.LcVVML_backend_SeqSOS$State__f_fs;
         var key = new $c_T2(mn$2, f$2);
-        var fs = $as_sci_Map(this$22.removed__O__sci_MapOps(key).$plus$plus__sc_IterableOnce__sc_IterableOps(newForks));
+        var fs = $as_sci_Map(this$21.removed__O__sci_MapOps(key).$plus$plus__sc_IterableOnce__sc_IterableOps(newForks));
         var ret = s.LcVVML_backend_SeqSOS$State__f_ret;
         var starting = s.LcVVML_backend_SeqSOS$State__f_starting;
-        var y$2 = new $c_LcVVML_backend_SeqSOS$State(p, as, fs, ret, starting);
-        return new $c_T2(self$2, y$2)
+        var newState = new $c_LcVVML_backend_SeqSOS$State(p, as, fs, ret, starting);
+        var this$23 = m.LcVVML_lang_Syntax$Method__f_stop;
+        if (this$23.contains__O__Z(f$2)) {
+          var self$2 = ((("sync-stop-" + mn$2) + "/") + f$2);
+          var this$25 = s.LcVVML_backend_SeqSOS$State__f_ret;
+          var y$2 = (this$25.isEmpty__Z() ? newState : this$25.get__O());
+          return new $c_T2(self$2, y$2)
+        } else {
+          var self$3 = ((("sync-" + mn$2) + "/") + f$2);
+          return new $c_T2(self$3, newState)
+        }
       }
     };
     throw new $c_s_MatchError(x$1$4)
@@ -18550,7 +18572,7 @@ $c_LcVVML_backend_SeqSOS$.prototype.next__LcVVML_backend_SeqSOS$State__sci_Set =
   return $as_sci_Set(this$5.concat__sc_IterableOnce__O(suffix))
 });
 $c_LcVVML_backend_SeqSOS$.prototype.accepting__LcVVML_backend_SeqSOS$State__Z = (function(s) {
-  return (s.LcVVML_backend_SeqSOS$State__f_as.isEmpty__Z() && s.LcVVML_backend_SeqSOS$State__f_fs.isEmpty__Z())
+  return ((s.LcVVML_backend_SeqSOS$State__f_as.isEmpty__Z() && s.LcVVML_backend_SeqSOS$State__f_fs.isEmpty__Z()) && (!s.LcVVML_backend_SeqSOS$State__f_starting))
 });
 var $d_LcVVML_backend_SeqSOS$ = new $TypeData().initClass({
   LcVVML_backend_SeqSOS$: 0
@@ -18594,7 +18616,7 @@ function $c_LcVVML_frontend_CaosConfig$() {
     throw new $c_s_MatchError(x1)
   }));
   $m_s_package$();
-  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = \"Other Process\"\n\n  init -> work: just work\n  // comment to become ill-behaved\n\tinit ->  pr2: pre-process\n  // comment to become ill-formed\n  pr2 -> work\n  \n\tinput => init.\"in pin\"\n  init.out => pr2.in\n  // comment one of the 2 lines\n  // below to become ill-formed\n  pr2.out => work.in\n  work.out => output\n}", "choices", "Simple example with choices."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  pr2 -> mrg  w -> mrg\n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\"\n}", "fork", "Simple example with concurrency."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = call \"Other Process\"\n\n  init ->  pr2\n  pr2 -> work\n\t\n  input => init.\"pin 1\"\n}\nmethod \"Other Process\" {\n start act think\n stop act think\n}", "call", "Simple example with call behaviour."), new $c_Lcaos_frontend_Configurator$Example("method m1 {\n  start act a1\n  \t= \"Act 1\"\n  stop act a2\n  \t= \"Act 2\"\n    \n  a1.oa:a => a2.ia\n  a2.oa => \"Output pin\":\"Some result\"\n  \n  a1->a2\n  a2->a1\n}", "loop", "Example with loops."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n  start act i = \"Initialise\"\n  fork f\n  stop fork m\n\n  i ->  f\n  f->a1 f->a2 f->a3 f->a4 f->a5 f->a6\n  a1->m a2->m a3->m a4->m a5->m a6->m\n\n  // uncomment to timeout at 2000 states when checking behaviour\n  // f->a7 a7->m\n}", "big fork", "Example with an explosion of states"), new $c_Lcaos_frontend_Configurator$Example("method Process {\n\tstart act m = \"Define VVML method\"\n  stop act w = call \"Specify workflow\"\n\n\tm -> w\n\t\n  m.\"\":\"Meth Spec\"  => w.\"\":\"Meth Spec\"\n\tm.\"\":\"Meth Spec\"  =>   \"\":\"Meth Spec\"\n\tw.\"\":\"Workf Spec\" =>   \"\":\"Workf Spec\"\n}", "EA", "Simple example that describes how to write VVML diagrams in Enterprise Architect."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  w -> work1  w -> work2\n  work1 -> mrg work2 -> mrg\n  pr2 -> mrg\n  \n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\":int\n}", "stuck-1", "Merger can never succeed."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n\t\n  i ->  work1\n  i -> work2\n  work2 -> wait  wait -> work2\n\n\tstop act work1  \n}", "stuck-2", "Worker 2 never finishes (but worker 1 can finish)."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\t// labelling\n\tact init: \"Initialise\"\n\tact pr2: \"Other Process\"\n  \n\n\t// marking start/stop/fork\n\tstart init\n   // can have labels\n  stop work: \"Nothing more to do\"\n  fork f // unused\n  \n  // possibly labelled transitions\n  init -> work: \"just work\"\n\tinit ->  pr2: \"pre-process\"\n  pr2 -> work\n\n\t// unlabelled and typed artifact flows\n\tinput:Int => init.\"in pin\":Float // Int is a type, not a label\n  init.out => pr2.in\n  pr2.out => work.in\n  work.out => output\n}", "New Syntax", "Not implemented yet (just to experiment)"), new $c_Lcaos_frontend_Configurator$Example("method \"Model Checking Families of Real-Time Specifications\" {\n\tstart fork f\n  fork mg\n  act spec = \"Build annotated<br>RT spec\"\n  act tab = \"Build<br>configuration<br>tables\"\n  act app = \"Apply<br>configurations\"\n  act refs = \"Refine<br>specifications\"\n  act refp = \"Refine<br>param&req\"\n  act ver = \"Verify<br>instances\"\n  act expl = \"State explosion<br>or unexpected res?\"\n  act fail = \"Failed<br>property?\"\n\n  f->spec f->tab\n  spec->mg tab->mg\n  mg->app\n  app->ver\n  ver->expl\n  expl->fail: no\n  stop act fail: no\n  expl->refp: yes\n  fail->refs: yes\n  refs->app refp->app // missing initially\n  \n  Behaviour:\"Behavioural Model\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => tab.beh:\"Behavioural Model\"\n  \"Test scenarios\":Scenarios => tab.scen:Scenarios\n  spec.\"annotated spec\" => refs.in\n  refs.\"annotated spec\"=> app.spec\n  tab.conf=>app.conf tab.conf=>refp.conf tab.conf=>ConfTab\n  refp.rConf=>app.conf \n  app.inst=>ver.inst app.inst=>SpecInstances\n  ver.rep=>expl.rep ver.rep=>fail.rep ver.rep=>VerRep \n}", "MCF", "")]));
+  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act a1\n  stop act more: no\n  stop act a2 = call M2\n\n  a1 ->  more\n  more -> a2: yes\n  \n  mi1=>a1.ai1   a1.ao1 => mo1\n  mi1=>a2.mi2   a2.mo2 => mo1\n}\n\nmethod \"M2\" {\n start fork f1\n stop  fork f2\n f1->a3   a3->f2\n f1->a4   a4->f2\n mi2=>a3.ai3  a3.ao3=>mo2\n}", "demo", "Complete demo example: do a1, then maybe a3 and a4 in parallel."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = \"Other Process\"\n\n  init -> work: just work\n  // comment to become ill-behaved\n\tinit ->  pr2: pre-process\n  // comment to become ill-formed\n  pr2 -> work\n  \n\tinput => init.\"in pin\"\n  init.out => pr2.in\n  // comment one of the 2 lines\n  // below to become ill-formed\n  pr2.out => work.in\n  work.out => output\n}", "choices", "Simple example with choices."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  pr2 -> mrg  w -> mrg\n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\"\n}", "fork", "Simple example with concurrency."), new $c_Lcaos_frontend_Configurator$Example("method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact pr2 = call \"Other Process\"\n\n  init ->  pr2\n  pr2 -> work\n\t\n  input => init.\"pin 1\"\n}\nmethod \"Other Process\" {\n start act think\n stop act think\n}", "call", "Simple example with call behaviour."), new $c_Lcaos_frontend_Configurator$Example("method m1 {\n  start act a1\n  \t= \"Act 1\"\n  stop act a2\n  \t= \"Act 2\"\n    \n  a1.oa:a => a2.ia\n  a2.oa => \"Output pin\":\"Some result\"\n  \n  a1->a2\n  a2->a1\n}", "loop", "Example with loops."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n  start act i = \"Initialise\"\n  fork f\n  stop fork m\n\n  i ->  f\n  f->a1 f->a2 f->a3 f->a4 f->a5 f->a6\n  a1->m a2->m a3->m a4->m a5->m a6->m\n\n  // uncomment to timeout at 2000 states when checking behaviour\n  // f->a7 a7->m\n}", "big fork", "Example with an explosion of states"), new $c_Lcaos_frontend_Configurator$Example("method Process {\n\tstart act m = \"Define VVML method\"\n  stop act w = call \"Specify workflow\"\n\n\tm -> w\n\t\n  m.\"\":\"Meth Spec\"  => w.\"\":\"Meth Spec\"\n\tm.\"\":\"Meth Spec\"  =>   \"\":\"Meth Spec\"\n\tw.\"\":\"Workf Spec\" =>   \"\":\"Workf Spec\"\n}", "EA", "Simple example that describes how to write VVML diagrams in Enterprise Architect."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n  act w = \"Go work\"\n\tact pr2 = \"Other Process\"\n  fork f\n  stop fork mrg\n\t\n  i ->  f\n  f -> pr2    f -> w\n  w -> work1  w -> work2\n  work1 -> mrg work2 -> mrg\n  pr2 -> mrg\n  \n  // uncomment to become ill-behaved\n  // w -> i\n  \n\tinput => i.\"pin 1\":int\n}", "stuck-1", "Merger can never succeed."), new $c_Lcaos_frontend_Configurator$Example("method M1 {\n\tstart act i = \"Initialise\"\n\t\n  i ->  work1\n  i -> work2\n  work2 -> wait  wait -> work2\n\n\tstop act work1  \n}", "stuck-2", "Worker 2 never finishes (but worker 1 can finish)."), new $c_Lcaos_frontend_Configurator$Example("method \"Model Checking Families of Real-Time Specifications\" {\n\tstart fork f\n  fork mg\n  act spec = \"Build annotated<br>RT spec\"\n  act tab = \"Build<br>configuration<br>tables\"\n  act app = \"Apply<br>configurations\"\n  act refs = \"Refine<br>specifications\"\n  act refp = \"Refine<br>param&req\"\n  act ver = \"Verify<br>instances\"\n  act expl = \"State explosion<br>or unexpected res?\"\n  act fail = \"Failed<br>property?\"\n\n  f->spec f->tab\n  spec->mg tab->mg\n  mg->app\n  app->ver\n  ver->expl\n  expl->fail: no\n  stop act fail: no\n  expl->refp: yes\n  fail->refs: yes\n  refs->app refp->app // missing initially\n  \n  Behaviour:\"Behavioural Model\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => spec.beh:\"Behavioural Model\"\n  \"Real-Time\":\"Real Time Parameters\" => tab.beh:\"Behavioural Model\"\n  \"Test scenarios\":Scenarios => tab.scen:Scenarios\n  spec.\"annotated spec\" => refs.in\n  refs.\"annotated spec\"=> app.spec\n  tab.conf=>app.conf tab.conf=>refp.conf tab.conf=>ConfTab\n  refp.rConf=>app.conf \n  app.inst=>ver.inst app.inst=>SpecInstances\n  ver.rep=>expl.rep ver.rep=>fail.rep ver.rep=>VerRep \n}", "MCF", "")]));
   this.LcVVML_frontend_CaosConfig$__f_examples = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems);
   $m_s_package$();
   var $$x7 = $m_sr_ScalaRunTime$();
@@ -19345,7 +19367,16 @@ $c_Lcaos_frontend_widgets_SimulateMermaid.prototype.showEnabled__O__V = (functio
   var enabled = this$1.next__LcVVML_backend_SeqSOS$State__sci_Set($as_LcVVML_backend_SeqSOS$State(from));
   var ul = this.Lcaos_frontend_widgets_SimulateMermaid__f_left.append__T__Lcaos_frontend_widgets_DomElem("ul").style__T__Lcaos_frontend_widgets_DomElem("list-style-type:none;padding:0;margin:0;");
   ul.append__T__Lcaos_frontend_widgets_DomElem("li").append__T__Lcaos_frontend_widgets_DomElem("span").style__T__Lcaos_frontend_widgets_DomElem("font-weight:bold;").textEl__T__Lcaos_frontend_widgets_DomElem("Enabled transitions:");
-  enabled.withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
+  $m_sci_List$();
+  var this$4 = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(enabled);
+  var lt = new $c_sjsr_AnonFunction2(((_$9, _$10) => {
+    var _$9$1 = $as_T2(_$9);
+    var _$10$1 = $as_T2(_$10);
+    var $$x1 = $m_sc_StringOps$();
+    var x = $dp_toString__T(_$9$1.T2__f__1);
+    return $$x1.$less$extension__T__T__Z(x, $dp_toString__T(_$10$1.T2__f__1))
+  }));
+  $as_sc_IterableOps($f_sc_SeqOps__sortWith__F2__O(this$4, lt)).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
     var x$1$1 = $as_T2(x$1);
     return (x$1$1 !== null)
   }))).foreach__F1__V(new $c_sjsr_AnonFunction1(((x$1$2) => {
@@ -19596,7 +19627,16 @@ $c_Lcaos_frontend_widgets_SimulateText.prototype.showEnabled__O__V = (function(f
   var enabled = this$1.next__LcVVML_backend_SeqSOS$State__sci_Set($as_LcVVML_backend_SeqSOS$State(from));
   var ul = this.Lcaos_frontend_widgets_SimulateText__f_left.append__T__Lcaos_frontend_widgets_DomElem("ul").style__T__Lcaos_frontend_widgets_DomElem("list-style-type:none;padding:0;margin:0;");
   ul.append__T__Lcaos_frontend_widgets_DomElem("li").append__T__Lcaos_frontend_widgets_DomElem("span").style__T__Lcaos_frontend_widgets_DomElem("font-weight:bold;").textEl__T__Lcaos_frontend_widgets_DomElem("Enabled transitions:");
-  enabled.withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
+  $m_sci_List$();
+  var this$4 = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(enabled);
+  var lt = new $c_sjsr_AnonFunction2(((_$9, _$10) => {
+    var _$9$1 = $as_T2(_$9);
+    var _$10$1 = $as_T2(_$10);
+    var $$x1 = $m_sc_StringOps$();
+    var x = $dp_toString__T(_$9$1.T2__f__1);
+    return $$x1.$less$extension__T__T__Z(x, $dp_toString__T(_$10$1.T2__f__1))
+  }));
+  $as_sc_IterableOps($f_sc_SeqOps__sortWith__F2__O(this$4, lt)).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
     var x$1$1 = $as_T2(x$1);
     return (x$1$1 !== null)
   }))).foreach__F1__V(new $c_sjsr_AnonFunction1(((x$1$2) => {
@@ -33316,6 +33356,9 @@ function $f_sc_SeqOps__sorted__s_math_Ordering__O($thiz, ord) {
     }
   };
   return b.result__O()
+}
+function $f_sc_SeqOps__sortWith__F2__O($thiz, lt) {
+  return $thiz.sorted__s_math_Ordering__O(($m_s_package$(), new $c_s_math_Ordering$$anon$4(lt)))
 }
 function $f_sc_SeqOps__sortBy__F1__s_math_Ordering__O($thiz, f, ord) {
   return $thiz.sorted__s_math_Ordering__O(new $c_s_math_Ordering$$anon$1(ord, f))
@@ -47307,6 +47350,42 @@ var $d_s_math_Ordering$$anon$1 = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_s_math_Ordering$$anon$1.prototype.$classData = $d_s_math_Ordering$$anon$1;
+/** @constructor */
+function $c_s_math_Ordering$$anon$4(cmp$2) {
+  this.s_math_Ordering$$anon$4__f_cmp$2 = null;
+  this.s_math_Ordering$$anon$4__f_cmp$2 = cmp$2
+}
+$c_s_math_Ordering$$anon$4.prototype = new $h_O();
+$c_s_math_Ordering$$anon$4.prototype.constructor = $c_s_math_Ordering$$anon$4;
+/** @constructor */
+function $h_s_math_Ordering$$anon$4() {
+  /*<skip>*/
+}
+$h_s_math_Ordering$$anon$4.prototype = $c_s_math_Ordering$$anon$4.prototype;
+$c_s_math_Ordering$$anon$4.prototype.equiv__O__O__Z = (function(x, y) {
+  return $f_s_math_Ordering__equiv__O__O__Z(this, x, y)
+});
+$c_s_math_Ordering$$anon$4.prototype.isReverseOf__s_math_Ordering__Z = (function(other) {
+  return $f_s_math_Ordering__isReverseOf__s_math_Ordering__Z(this, other)
+});
+$c_s_math_Ordering$$anon$4.prototype.compare__O__O__I = (function(x, y) {
+  return ($uZ(this.s_math_Ordering$$anon$4__f_cmp$2.apply__O__O__O(x, y)) ? (-1) : ($uZ(this.s_math_Ordering$$anon$4__f_cmp$2.apply__O__O__O(y, x)) ? 1 : 0))
+});
+$c_s_math_Ordering$$anon$4.prototype.lteq__O__O__Z = (function(x, y) {
+  return (!$uZ(this.s_math_Ordering$$anon$4__f_cmp$2.apply__O__O__O(y, x)))
+});
+var $d_s_math_Ordering$$anon$4 = new $TypeData().initClass({
+  s_math_Ordering$$anon$4: 0
+}, false, "scala.math.Ordering$$anon$4", {
+  s_math_Ordering$$anon$4: 1,
+  O: 1,
+  s_math_Ordering: 1,
+  ju_Comparator: 1,
+  s_math_PartialOrdering: 1,
+  s_math_Equiv: 1,
+  Ljava_io_Serializable: 1
+});
+$c_s_math_Ordering$$anon$4.prototype.$classData = $d_s_math_Ordering$$anon$4;
 function $f_s_math_Ordering$CachedReverse__isReverseOf__s_math_Ordering__Z($thiz, other) {
   return (other === $thiz.s_math_Ordering$Int$__f_scala$math$Ordering$CachedReverse$$_reverse)
 }

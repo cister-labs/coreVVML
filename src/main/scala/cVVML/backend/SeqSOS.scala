@@ -136,7 +136,10 @@ object SeqSOS extends caos.sos.SOS[String,State]:
       for (nr,_) <- newReady if s.as.contains(nr) do
         sys.error(s"Trying to enter $nr but state was not idle (${
           s.as.mkString(",")})") //improve message
-      s"sync-$mn/$f" -> State(s.p, s.as ++ newReady, (s.fs-(mn->f)) ++ newForks, s.ret, s.starting)
+      val newState = State(s.p, s.as ++ newReady, (s.fs-(mn->f)) ++ newForks, s.ret, s.starting)
+      if m.stop(f)
+      then s"sync-stop-$mn/$f" -> s.ret.getOrElse(newState)
+      else s"sync-$mn/$f" -> newState
 
   private def callCase(s:State) =
     for (a, Run) <- s.as
@@ -170,4 +173,4 @@ object SeqSOS extends caos.sos.SOS[String,State]:
     callCase(s)
 
   override def accepting(s:State): Boolean =
-    s.as.isEmpty && s.fs.isEmpty
+    s.as.isEmpty && s.fs.isEmpty && !s.starting

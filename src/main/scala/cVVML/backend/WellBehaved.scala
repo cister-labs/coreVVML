@@ -62,7 +62,7 @@ object WellBehaved :
         case Some(st) => //visiting new state
           val more = SeqSOS.next(st)
           if more.isEmpty && !SeqSOS.accepting(st) then
-            sys.error(s"Suck at {${(st.as.keySet++st.fs.keySet).map(x=>s"\"${x._1}/${x._2}\"").mkString(",")}} and cannot stop.")
+            sys.error(s"Stuck at {${(st.as.keySet++st.fs.keySet).map(x=>s"\"${x._1}/${x._2}\"").mkString(",")}} and cannot stop.")
           aux((next-st)++more.map(_._2), done+st, edges+more.size,limit-1)
 
     aux(Set(s), Set(), 0, max)

@@ -12,24 +12,29 @@ object Mermaid:
 
   def apply(st:State): String =
     val s = State(Program(st.p.ms.map(kv=>kv._1->kv._2.noData),st.p.main),st.as,st.fs,st.ret,st.starting)
-    def getForkSt(m:String,f:Fork,n:Int) =
-      val pred = for
-        meth <- s.p.ms.get(m).toSet
-        (a,dest) <- meth.next
-        if dest.contains(f)
-      yield a
-      val need = pred.size
-      //println(s"Need: $need (${pred.mkString(",")}), has: $n")
-      if n>=need then "Ready"
-      else "NotReady"
     s"""${apply(s.p)}
        |classDef Ready fill:#bbf,stroke-width:3pt,stroke:#228;
        |classDef NotReady fill:#bbf,stroke-width:3pt,stroke:#88b;
        |classDef Run fill:#fc8,stroke-width:4pt,stroke:#964;
        |classDef Done fill:#f88,stroke-width:4pt,stroke:#700;
-       |${(for ((m,a)->aSt) <- s.as yield s"${fixMeth(m)}_m$a:::$aSt").mkString("\n")}
-       |${(for ((m,f)->n) <- s.fs yield s"${fixMeth(m)}_m$f:::${getForkSt(m,f,n)}").mkString("\n")}
+       |${markState(s)}
        |""".stripMargin
+
+  private def getForkSt(s:State, m: String, f: Fork, n: Int) =
+    val pred = for
+      meth <- s.p.ms.get(m).toSet
+      (a, dest) <- meth.next
+      if dest.contains(f)
+    yield a
+    val need = pred.size
+    //println(s"Need: $need (${pred.mkString(",")}), has: $n")
+    if n >= need then "Ready"
+    else "NotReady"
+  private def markState(s:State): String =
+    (for ((m, a) -> aSt) <- s.as yield s"${fixMeth(m)}_m$a:::$aSt").mkString("\n") + "\n" +
+    (for ((m, f) -> n) <- s.fs yield s"${fixMeth(m)}_m$f:::${getForkSt(s, m, f, n)}").mkString("\n") + "\n" +
+    s.ret.map(markState).getOrElse("")
+
 
   def apply(p:Program): String =
     s"""graph TD
