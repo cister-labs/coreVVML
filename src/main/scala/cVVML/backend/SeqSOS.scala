@@ -4,12 +4,23 @@ import cVVML.lang.Syntax.{Activity, Program, Fork}
 import SeqSOS.State
 
 object SeqSOS extends caos.sos.SOS[String,State]:
-  case class State(p:Program,as:ActStates,fs:ForkStates,ret:Option[State],starting:Boolean)
+  case class State(p:Program,as:ActStates,fs:ForkStates,ret:Option[State],starting:Boolean):
+    override def toString: String = pp(this)
+
   type ActStates = Map[(String,Activity),ActState]
   type ForkStates = Map[(String,Fork),Int] // multiset of forks
 
-  def pp(s:State) =
-    s.as.mkString(",")+" / "+s.fs.mkString(",")
+  /** Pretty print a state */
+  def pp(s:State): String =
+    (s.as.map(ppMap) ++ s.fs.map(ppMap)).mkString(", ") +
+      (if s.starting then s"Starting ${s.p.main}" else "")
+
+  private def ppMap[A,B,C](l:((A,B),C)): String =
+    s"${ppPair(l._1)}->${l._2}"
+
+  private def ppPair[A, B](l: (A, B)): String =
+    s"${l._1}/${l._2}"
+
 
   enum ActState:
     case Ready
@@ -51,7 +62,7 @@ object SeqSOS extends caos.sos.SOS[String,State]:
 
   private def runCase(s:State): Set[(String,State)] =
     for (a,Ready)<-s.as.toSet yield
-      s"run-$a" -> State(s.p,s.as+(a->Run),s.fs, s.ret,s.starting)
+      s"run-${ppPair(a)}" -> State(s.p,s.as+(a->Run),s.fs, s.ret,s.starting)
 
   private def stopCase(s:State): Set[(String,State)] =
     var res = Set[(String,State)]()
@@ -69,7 +80,7 @@ object SeqSOS extends caos.sos.SOS[String,State]:
       if dropped.nonEmpty then
         sys.error(s"Stopping with running activities (${dropped.mkString(",")}).")
       val nextSt = s.ret.getOrElse(State(s.p, s.as -- drop, s.fs, None, s.starting))
-      res += s"stop-$mn/$a" -> nextSt
+      res += s"stop-${ppPair(mn->a)}" -> nextSt
     res
 
 //  private def stuckCase(s:State): Unit =
@@ -102,20 +113,21 @@ object SeqSOS extends caos.sos.SOS[String,State]:
         nxt <- nxts // Set[Act|Fork]
     yield
       val m = s.p.ms(a._1)
+      val qnxt = a._1 -> nxt // qualified next action
       val drop = nxts.map(s => a._1 -> s) + a
       if m.activities.contains(nxt) // if nxt is an activity
       then (
-        if s.as.contains(a._1 -> nxt) then
+        if s.as.contains(qnxt) then
           sys.error(s"Trying to enter \"${a._1}/${m(nxt)}\" but state was not idle (${s.as.mkString(",")})")
         else
-          s"allow-${a._1}/${nxt}" ->
-            State(s.p, (s.as -- drop) + ((a._1 -> nxt) -> Ready), s.fs, s.ret, s.starting))
+          s"allow-${ppPair(qnxt)}" ->
+            State(s.p, (s.as -- drop) + (qnxt -> Ready), s.fs, s.ret, s.starting))
       else (// nxt is a fork
         if s.as.contains(a._1 -> nxt) then
           sys.error(s"Trying to enter \"${a._1}/${m(nxt)}\" but state was not idle (${s.as.mkString(",")})")
         else
           val x = a._1 -> nxt
-          s"allow-${a._1}/${nxt}" ->
+          s"allow-${ppPair(qnxt)}" ->
             State(s.p, (s.as -- drop), s.fs + (x -> (s.fs.getOrElse(x, 0) + 1)), s.ret, s.starting))
 
   private def forkCase(s:State) =
@@ -125,6 +137,7 @@ object SeqSOS extends caos.sos.SOS[String,State]:
              s.p.ms(mn).start(f).compareTo(false))
     yield
       val m = s.p.ms(mn)
+      val qf = mn->f // qualified f
       val newReady: Set[((String,Activity),ActState)] = for
           nxt <- m.next.getOrElse(f,Set()) // nxt is a fork or an activity
           if m.activities.contains(nxt) // nxt must be an activity
@@ -135,11 +148,11 @@ object SeqSOS extends caos.sos.SOS[String,State]:
       yield (mn, nxt) -> (s.fs.getOrElse(f->nxt, 0)+1)
       for (nr,_) <- newReady if s.as.contains(nr) do
         sys.error(s"Trying to enter $nr but state was not idle (${
-          s.as.mkString(",")})") //improve message
-      val newState = State(s.p, s.as ++ newReady, (s.fs-(mn->f)) ++ newForks, s.ret, s.starting)
+          s.as.map(ppMap).mkString(",")})") //improve message
+      val newState = State(s.p, s.as ++ newReady, (s.fs-qf) ++ newForks, s.ret, s.starting)
       if m.stop(f)
-      then s"sync-stop-$mn/$f" -> s.ret.getOrElse(newState)
-      else s"sync-$mn/$f" -> newState
+      then s"sync-stop-${ppPair(qf)}" -> s.ret.getOrElse(newState)
+      else s"sync-${ppPair(qf)}" -> newState
 
   private def callCase(s:State) =
     for (a, Run) <- s.as

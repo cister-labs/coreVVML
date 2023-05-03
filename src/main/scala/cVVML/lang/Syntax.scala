@@ -64,7 +64,7 @@ object Syntax:
     def noData =
       Method(activities,start,stop,forks,src,snk,next,Map(),call,nodeLbl,edgeLbl)
     def noFlow =
-      Method(activities,Set(),Set(),forks,src,snk,Map(),dataflow,call,nodeLbl,edgeLbl)
+      Method(activities,Set(),Set(),Set(),src,snk,Map(),dataflow,call,nodeLbl,edgeLbl)
 
   object Method:
     val empty: Method =

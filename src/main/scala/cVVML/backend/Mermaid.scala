@@ -36,9 +36,9 @@ object Mermaid:
     s.ret.map(markState).getOrElse("")
 
 
-  def apply(p:Program): String =
+  def apply(p:Program, justData:Boolean = false): String =
     s"""graph TD
-       |${p.ms.map(x=>apply(x._1,x._2)).mkString("\n\n")}
+       |${p.ms.map(x=>apply(x._1,x._2,justData)).mkString("\n\n")}
        |${fixMeth(p.main)}:::mn
        |
        |classDef in fill:#2f2,stroke:#ccc;
@@ -50,9 +50,9 @@ object Mermaid:
        |classDef df fill:#ffd,stroke-width:1pt,stroke:#994;
        |classDef mn fill:#ffb,stroke-width:2pt,stroke:#882;""".stripMargin
 
-  def apply(name:String, m: Method): String =
+  def apply(name:String, m: Method, justData: Boolean): String =
     s"""  subgraph ${name.replaceAll(" ","_")} [$name]
-       |${apply(qualify(name,m),name)}
+       |${apply(qualify(name,m),name, justData)}
        |""".stripMargin
 
   /** adds the method name to all identifiers, and extends the
@@ -74,7 +74,7 @@ object Mermaid:
       m.activities.keySet.map(x=>upd(x)->x).toMap ++ m.nodeLbl.map(x=>upd(x._1)->x._2),
       m.edgeLbl.map(x=> upd2(x._1) -> x._2))
 
-  def apply(m: Method, name: String): String =
+  def apply(m: Method, name: String, justData: Boolean): String =
     val c = new Cache
     import c._
     val nm = name.replaceAll(" ","_")
@@ -84,9 +84,8 @@ object Mermaid:
       case None => s"p${get(pin.toString)}_$nm[$pin]:::it"
 
     val s = "    "
-    s"""${s}Init_$nm(( )):::in
-      |${s}Stop_$nm(( )):::st
-      |${s}${(for (n,desc)<-m.nodeLbl if m.activities.contains(n)
+    (if justData then "" else s"${s}Init_$nm(( )):::in\n${s}Stop_$nm(( )):::st\n") +
+    s"""${s}${(for (n,desc)<-m.nodeLbl if m.activities.contains(n)
              yield if m.isDecisionAct(n)
                then s"$n{{$desc}}:::gw"
              else if m.call.contains(n)
