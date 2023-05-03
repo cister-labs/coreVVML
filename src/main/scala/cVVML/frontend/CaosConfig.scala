@@ -22,7 +22,7 @@ object CaosConfig extends Configurator[Program]:
 
   val examples = List(
     "demo"
-      -> "method \"M1\" {\n\tstart act a1\n  stop act more: no\n  stop act a2 = call M2\n\n  a1 ->  more\n  more -> a2: yes\n  \n  mi1=>a1.ai1   a1.ao1 => mo1\n  mi1=>a2.mi2   a2.mo2 => mo1\n}\n\nmethod \"M2\" {\n start fork f1\n stop  fork f2\n f1->a3   a3->f2\n f1->a4   a4->f2\n mi2=>a3.ai3  a3.ao3=>mo2\n}"
+      -> "method \"M1\" {\n\tstart act a1\n  stop act more = \"more?\": no\n  stop act a2 = call M2\n\n  a1 ->  more\n  more -> a2: yes\n  \n  mi1=>a1.ai1   a1.ao1 => mo1\n  mi1=>a2.mi2   a2.mo2 => mo1\n}\n\nmethod \"M2\" {\n start fork f1\n stop  fork f2\n f1->a3   a3->f2\n f1->a4   a4->f2\n mi2=>a3.ai3  a3.ao3=>mo2\n}"
       -> "Complete demo example: do a1, then maybe a3 and a4 in parallel.<br/><br/>-- M1=a1;(M2 + 0)  M2=a3|a4 --",
     "choices"
       -> "method \"M1\" {\n\tstart act init = \"Initialise\"\n  stop act work = \"Go work\"\n\tact other = \"Other Process\"\n\n  init -> work: just work\n  // comment to become ill-behaved\n\tinit ->  other: pre-process\n  // comment to become ill-formed\n  other -> work\n  \n\tinput => init.\"in pin\"\n  init.out => other.in\n  // comment one of the 2 lines\n  // below to become ill-formed\n  other.out => work.in\n  work.out => output\n}"
