@@ -56,7 +56,7 @@ object CaosConfig extends Configurator[Program]:
       -> "Larger example imported method from UC10.<br><a href=\"https://repo.valu3s.eu/use-cases/uc10-safe-function-out-of-context/workflow/model-checking-families-of-real-time-specifications\">https://repo.valu3s.eu/use-cases/uc10-safe-function-out-of-context/workflow/model-checking-families-of-real-time-specifications</a><br/><br/>-- (spec|tab) ; X=>app;ver;expl;(ref;X + fail;(ref;X + 0)) --",
     "AINC"
       -> "method \"Assessment of implementation of network communication\" {\n\tstart act impl=\"Implementation\"\n  act static=\"Static Code Analysis\"\n  act sim=\"Simulated fault-injection of a network link\"\n  stop act rep=\"Generate Report\"  \n\n  impl -> static\n  static -> sim\n  sim -> rep\n  \n  \"\":Requirements=>impl.Reqs\n  \"\":SystemDescription=>sim.\"\"\n  impl.Code => static.Code\n  static.\"Test Scenarios\" => sim.\"Test Scenarios\"\n  static.AnalysisResult => rep.AnalysisResult\n  sim.\"Performance report\" => rep.\"Performance report\"\n  rep.\"\" => \"\":Report\n}"
-      -> "Example method imported from a Use-Case of VALU3S, over the assessment of implementation of network communication.",
+      -> "Example method imported from a Use-Case of VALU3S, over the assessment of implementation of network communication.<br><a href=\"https://repo.valu3s.eu/use-cases/intelligent-traffic-surveillance/workflow/assessment-of-implementation-of-network-communication\">https://repo.valu3s.eu/use-cases/intelligent-traffic-surveillance/workflow/assessment-of-implementation-of-network-communication</a><br/><br/>-- impl; analysis; faultInj; report --",
   )
 
   val widgets = List(
