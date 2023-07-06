@@ -99,13 +99,17 @@ object Mermaid:
         s"$from --\" ${m.edgeLbl.getOrElse(from->to,"")}\"--> ${to}").mkString(s"\n$s")}
       |${s}${(for pin1<-m.src; pin2<-m.dataflow.getOrElse(pin1,Set())
                   if pin1.act.nonEmpty && pin2.act.nonEmpty yield
-        s"${pin1.act.get} -.\"${pin1.pp}->${pin2.pp}\".-> ${pin2.act.get}"
+            if pin1.pp==pin2.pp
+            then s"${pin1.act.get} -.\"${pin1.pp}\".-> ${pin2.act.get}"
+            else s"${pin1.act.get} -.\"${pin1.pp}->${pin2.pp}\".-> ${pin2.act.get}"
       ).mkString(s"\n$s")
       }
       |${s.drop(2)}end
       |${(for pin1<-m.src; pin2<-m.dataflow.getOrElse(pin1,Set())
                   if pin1.act.isEmpty || pin2.act.isEmpty yield
-            s"${getPin(pin1)} -.\"${pin1.pp}->${pin2.pp}\".-> ${{getPin(pin2)}}"
+            if pin1.pp == pin2.pp
+            then s"${getPin(pin1)} -.\"${pin1.pp}\".-> ${{getPin(pin2)}}"
+            else s"${getPin(pin1)} -.\"${pin1.pp}->${pin2.pp}\".-> ${{getPin(pin2)}}"
       ).mkString(s"\n")
       }
       |""".stripMargin
