@@ -56,7 +56,7 @@ object SeqSOS extends caos.sos.SOS[String,State]:
       val newFork = if m.forks.contains(nxt)
                     then (s.fs--dropF)+((mname->nxt)->1)
                     else (s.fs--dropF)
-      s"allow-${mname}/$nxt" ->
+      s"start-${mname}/$nxt" ->
         State(s.p, newAct, newFork, s.ret, false)
 
 
@@ -120,14 +120,14 @@ object SeqSOS extends caos.sos.SOS[String,State]:
         if s.as.contains(qnxt) then
           sys.error(s"Trying to enter \"${a._1}/${m(nxt)}\" but state was not idle (${s.as.mkString(",")})")
         else
-          s"allow-${ppPair(qnxt)}" ->
+          s"end-${ppPair(a)}→$nxt" -> //s"allow-${ppPair(qnxt)}"
             State(s.p, (s.as -- drop) + (qnxt -> Ready), s.fs, s.ret, s.starting))
       else (// nxt is a fork
         if s.as.contains(a._1 -> nxt) then
           sys.error(s"Trying to enter \"${a._1}/${m(nxt)}\" but state was not idle (${s.as.mkString(",")})")
         else
           val x = a._1 -> nxt
-          s"allow-${ppPair(qnxt)}" ->
+          s"end-${ppPair(a)}→$nxt" -> //s"allow-${ppPair(qnxt)}"
             State(s.p, (s.as -- drop), s.fs + (x -> (s.fs.getOrElse(x, 0) + 1)), s.ret, s.starting))
 
   private def forkCase(s:State) =

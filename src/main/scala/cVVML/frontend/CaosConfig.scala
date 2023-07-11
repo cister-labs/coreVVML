@@ -63,6 +63,39 @@ object CaosConfig extends Configurator[Program]:
     "AINC"
       -> "method \"Assessment of implementation of network communication\" {\n\tstart act impl=\"Implementation\"\n  act static=\"Static Code Analysis\"\n  act sim=\"Simulated fault-injection of a network link\"\n  stop act rep=\"Generate Report\"  \n\n  impl -> static\n  static -> sim\n  sim -> rep\n  \n  \"\":Requirements=>impl.Reqs\n  \"\":SystemDescription=>sim.\"\"\n  impl.Code => static.Code\n  static.\"Test Scenarios\" => sim.\"Test Scenarios\"\n  static.AnalysisResult => rep.AnalysisResult\n  sim.\"Performance report\" => rep.\"Performance report\"\n  rep.\"\" => \"\":Report\n}"
       -> "Example method imported from a Use-Case of VALU3S, over the assessment of implementation of network communication.<br><a href=\"https://repo.valu3s.eu/use-cases/intelligent-traffic-surveillance/workflow/assessment-of-implementation-of-network-communication\">https://repo.valu3s.eu/use-cases/intelligent-traffic-surveillance/workflow/assessment-of-implementation-of-network-communication</a><br/><br/>-- impl; analysis; faultInj; report --",
+    "#1"
+      -> "method m1 {\n  start act a1 = \"Act 1\"\n  stop act  a2 = \"Act 2\"\n    \n  a1.data => a2.data\n  \n  a1->a2\n}"
+      -> "Is it correct? (Didactic example)",
+    "#2"
+      -> "method m1 {\n  start fork f1\n  stop act A3\n\n  f1->A1 f1->A2\n  A1->A3 A2->A3\n}"
+      -> "Is it correct? (Didactic example)",
+    "#3"
+      -> "method m1 {\n\tstart act ch=\"?\"\n  fork f1\n  stop act A3\n\n\tch->A1 ch->A2\n  A1->f1 A2->f1\n  f1->A3\n}"
+      -> "Is it correct? (Didactic example)",
+    "#4"
+      -> "method m1 {\n  start fork f1\n  fork f2\n  stop fork f3\n\n\tf1->f2 f1->A3\n  f2->A1 f2->A2\n  A1->f3 A2->f3 A3->f3\n}"
+      -> "Is it correct? (Didactic example)",
+    "#5"
+      -> "method m1 {\n  start fork f1\n  act ch = \"?\"\n  stop fork f3\n\n\tf1->ch f1->A3\n  ch->A1 ch->A2\n  A1->f3 A2->f3 A3->f3\n}"
+      -> "Is it correct? (Didactic example)",
+    "#6"
+      -> "method m1 {\n  start act a1 = \"A1\"\n  stop  act a2 = \"A2\"\n    \n  a1.data => a2.data\n  a1.out => out\n  a2.out => out\n  \n  a1->a2\n  a2->a1\n}"
+      -> "Is it correct? (Didactic example)",
+    "#7"
+      -> "method m1 {\n  start act a1\n  fork f1\n  stop act a4\n\t \n \ta1->f1\n  f1->a2 f1->a3\n  a2->a1\n  a2->a4 a3->a4\n}"
+      -> "Is it correct? (Didactic example)",
+    "#7"
+      -> "method m1 {\n  start act a1\n  fork f1\n  stop act a4\n\t \n \ta1->f1\n  f1->a2 f1->a3\n  a2->a1\n  a2->a4 a3->a4\n}"
+      -> "Is it correct? (Didactic example)",
+    "#8"
+      -> "method m1 {\n  start fork f1\n  stop fork f2\n  act ch = \"?\"\n\t \n  f1->a1 f1->a2\n  a1->ch\n  a2->a4\n  ch->a3 ch->a4\n  a3->f2 a4->f2\n}"
+      -> "Is it correct? (Didactic example)",
+    "#9"
+      -> "method m1 {\n  stop act a1\n  start act ch = \"?\"\n\t \n  ch->a1 ch->a2\n  a2->a3 a3->a2\n}"
+      -> "Is it correct? (Didactic example)",
+    "#10"
+      -> "method m1 {\n  stop act a1\n  start act a1\n\t \n  a2->a3 a3->a2\n}"
+      -> "Is it correct? (Didactic example)",
   )
 
   val widgets = List(
