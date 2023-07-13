@@ -15,6 +15,12 @@ object SeqSOS extends caos.sos.SOS[String,State]:
     (s.as.map(ppMap) ++ s.fs.map(ppMap)).mkString(", ") +
       (if s.starting then s"Starting ${s.p.main}" else "")
 
+  def running(s:State): Iterable[Activity] =
+    for (qa,ast) <- s.as
+      if qa._1 == s.p.main && ast==ActState.Run
+      yield qa._2
+
+
   private def ppMap[A,B,C](l:((A,B),C)): String =
     s"${ppPair(l._1)}->${l._2}"
 

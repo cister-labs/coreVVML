@@ -84,9 +84,6 @@ object CaosConfig extends Configurator[Program]:
     "#7"
       -> "method m1 {\n  start act a1\n  fork f1\n  stop act a4\n\t \n \ta1->f1\n  f1->a2 f1->a3\n  a2->a1\n  a2->a4 a3->a4\n}"
       -> "Is it correct? (Didactic example)",
-    "#7"
-      -> "method m1 {\n  start act a1\n  fork f1\n  stop act a4\n\t \n \ta1->f1\n  f1->a2 f1->a3\n  a2->a1\n  a2->a4 a3->a4\n}"
-      -> "Is it correct? (Didactic example)",
     "#8"
       -> "method m1 {\n  start fork f1\n  stop fork f2\n  act ch = \"?\"\n\t \n  f1->a1 f1->a2\n  a1->ch\n  a2->a4\n  ch->a3 ch->a4\n  a3->f2 a4->f2\n}"
       -> "Is it correct? (Didactic example)",
@@ -114,7 +111,7 @@ object CaosConfig extends Configurator[Program]:
 //      val x = SOS.traverse(SeqSOS, SeqSOS.initial(p),max=2000)
 //      s"${if x._3 then "" else "- TIMEOUT -\n"}states: ${x._1.size}\nedges: ${x._2}"},
 //      Text),
-    "Run All (no data)" -> lts(SeqSOS.initial, SeqSOS, _=>" "), //SeqSOS.pp),
+    "Run All (no data)" -> lts(SeqSOS.initial, SeqSOS, st=> SeqSOS.running(st).mkString(",")), //SeqSOS.pp),
 //    "Diagram2" -> view (cVVML.backend.Mermaid.apply, Text),
 //    "Diagram (just sequence)" -> view[Program](x =>
 //      cVVML.backend.Mermaid(Program(x.ms.map(kv=>kv._1->kv._2.noData),x.main)), Mermaid),
